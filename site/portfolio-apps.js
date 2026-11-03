@@ -37,7 +37,7 @@
     const content = document.createElement('div');
     content.className = 'os-app-content';
     const title = { journal: 'Journal', projects: 'Projects', about: 'About' }[name];
-    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : 'notepad-1', content, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
+    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : 'notepad-1', content, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
     if (name === 'about') {
       app.element.classList.add('os-about-window');
       const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
