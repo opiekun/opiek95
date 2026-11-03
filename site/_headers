@@ -1,0 +1,7 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self' https://radio.plaza.one; connect-src 'self' https://api.plaza.one; frame-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+
+/preview/article/
+  X-Robots-Tag: noindex, nofollow

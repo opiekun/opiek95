@@ -1,0 +1,50 @@
+.os-media-window { width: min(360px, 100%); height: min(330px, 100%); }
+.os-music { display: flex; flex: 1; align-items: stretch; min-height: 0; padding: 0; background: #c0c0c0; color: #000; }
+.os-media-player { display: flex; flex: 1; flex-direction: column; min-width: 0; min-height: 0; padding: 0 3px 3px; font: 11px/1.2 "MS Sans Serif", Tahoma, sans-serif; }
+.os-media-source { display: none; }
+.os-media-menu { position: relative; z-index: 2; display: flex; align-items: center; gap: 2px; flex: none; height: 22px; }
+.os-media-menu details { position: relative; }
+.os-media-menu summary { padding: 3px 8px; cursor: default; list-style: none; }
+.os-media-menu summary::-webkit-details-marker { display: none; }
+.os-media-menu details[open] summary, .os-media-menu summary:hover { background: #000080; color: #fff; }
+.os-media-menu details > div { position: absolute; top: 100%; left: 0; min-width: 178px; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #7f7f7f, 2px 2px 0 #0008; }
+.os-media-menu details > div > * { display: block; width: 100%; margin: 0; padding: 5px 8px; border: 0; background: transparent; color: #000; text-align: left; text-decoration: none; white-space: nowrap; }
+.os-media-menu details > div > a:hover, .os-media-menu details > div > button:hover { background: #000080; color: #fff; }
+.os-media-menu details > div > p { white-space: normal; }
+.os-media-screen { display: grid; flex: 1; place-items: center; min-height: 90px; border: 2px solid; border-color: #7f7f7f #fff #fff #7f7f7f; background: #000; color: #fff; }
+.os-media-screen-content { display: flex; flex-direction: column; align-items: center; gap: 5px; max-width: 90%; text-align: center; opacity: 0; }
+.os-media-screen.show-info .os-media-screen-content { opacity: 1; }
+.os-media-screen-content img { width: 32px; height: 32px; image-rendering: pixelated; }
+.os-media-screen-content small { max-width: 100%; overflow: hidden; color: #c0c0c0; text-overflow: ellipsis; white-space: nowrap; }
+.os-media-timeline { flex: none; padding: 4px 5px 1px; }
+.os-media-timeline input { display: block; width: 100%; height: 15px; margin: 0; appearance: none; border: 2px solid; border-color: #808080 #fff #fff #808080; background: linear-gradient(#fff 0 5px, #808080 5px 7px, #fff 7px); }
+.os-media-timeline input::-webkit-slider-thumb { width: 12px; height: 20px; appearance: none; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset -1px -1px #808080; }
+.os-media-timeline input::-moz-range-thumb { width: 10px; height: 18px; border: 2px solid; border-color: #fff #000 #000 #fff; border-radius: 0; background: #c0c0c0; }
+.os-media-scale { height: 9px; margin: 2px 5px 0; background: repeating-linear-gradient(90deg, #000 0 1px, transparent 1px 24px) left top / auto 5px repeat-x; }
+.os-media-times { display: flex; justify-content: space-between; padding: 0 2px; font-variant-numeric: tabular-nums; }
+.os-media-transport { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex: none; min-height: 39px; border-top: 1px solid #808080; padding: 5px 3px 3px; box-shadow: inset 0 1px #fff; }
+.os-media-buttons { display: flex; align-items: center; gap: 3px; min-width: 0; }
+.os-media-buttons button { flex: none; width: 24px; height: 24px; overflow: hidden; padding: 0; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; color: #000; font: bold 12px/1 "MS Sans Serif", Tahoma, sans-serif; }
+.os-media-buttons button:active:not(:disabled) { border-color: #808080 #fff #fff #808080; box-shadow: inset 1px 1px #000; }
+.os-media-buttons button:disabled { color: #808080; text-shadow: 1px 1px #fff; cursor: default; }
+.os-media-skip { position: relative; display: block; width: 15px; height: 10px; margin: auto; }
+.os-media-skip-previous { background: linear-gradient(currentColor, currentColor) left 1px / 2px 8px no-repeat; }
+.os-media-skip-next { background: linear-gradient(currentColor, currentColor) right 1px / 2px 8px no-repeat; }
+.os-media-skip::before, .os-media-skip::after { content: ""; position: absolute; top: 1px; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+.os-media-skip-previous::before, .os-media-skip-previous::after { border-right: 5px solid currentColor; }
+.os-media-skip-next::before, .os-media-skip-next::after { border-left: 5px solid currentColor; }
+.os-media-skip-previous::before { left: 3px; }
+.os-media-skip-previous::after { left: 8px; }
+.os-media-skip-next::before { left: 2px; }
+.os-media-skip-next::after { left: 7px; }
+.os-media-separator { width: 2px; height: 22px; margin: 0 2px; background: #808080; box-shadow: 1px 0 #fff; }
+.os-media-volume { display: flex; align-items: center; gap: 5px; min-width: 80px; }
+.os-media-volume input { width: 72px; min-width: 0; height: 16px; margin: 0; accent-color: #808080; }
+.os-media-status { display: flex; justify-content: space-between; gap: 8px; flex: none; min-height: 18px; padding: 2px 4px; border: 1px solid; border-color: #808080 #fff #fff #808080; overflow: hidden; white-space: nowrap; }
+.os-media-status span { overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 520px) {
+  .os-media-buttons { gap: 1px; }
+  .os-media-buttons button { width: 22px; height: 22px; }
+  .os-media-volume { min-width: 54px; font-size: 0; }
+  .os-media-volume input { width: 54px; }
+}

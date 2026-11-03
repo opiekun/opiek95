@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.env
+.env.*
+.build-brief.txt
+/tests/
+
+.chrome-login-preview/
+.pages/

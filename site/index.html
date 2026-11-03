@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1118">
+  <meta name="description" content="Matheus (opiekun) — Senior Software Engineer in Blumenau, Brazil. A personal corner for software, commerce, and things built along the way.">
+  <title>opiekun — Matheus</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="stylesheet" href="/assets/fonts.css">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/desktop.css">
+  <link rel="stylesheet" href="/desktop-media.css">
+  <link rel="stylesheet" href="/desktop-utilities.css">
+  <script src="/app.js" defer></script>
+  <script src="/music-player.js" defer></script>
+  <script src="/desktop.js" defer></script>
+  <script src="/portfolio-apps.js" defer></script>
+  <script src="/desktop-utilities.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></symbol>
+      <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M20 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2Z"/></symbol>
+      <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+      <symbol id="icon-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM14 2v6h6M8 13h8M8 17h6"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+      <symbol id="icon-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6m6-16-4 20"/></symbol>
+      <symbol id="icon-map" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="pixel-heart" viewBox="0 0 20 16"><path d="M4 0h4v4h4V0h4v4h4v4h-4v4h-4v4H8v-4H4V8H0V4h4Z" fill="currentColor"/></symbol>
+      <symbol id="pixel-sparkle" viewBox="0 0 24 24"><g fill="currentColor" transform="rotate(45 12 12)"><rect x="10" y="3" width="4" height="18"/><rect x="3" y="10" width="18" height="4"/></g></symbol>
+      <symbol id="pixel-cloud" viewBox="0 0 64 32"><path d="M0 16h8V8h8V0h24v8h16v8h8v16H0Z" fill="currentColor"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="desktop">
+    <header class="desktop-header">
+      <a class="wordmark" href="/#journal" data-view="journal" aria-label="opiekun home"><span class="brand-mark" aria-hidden="true">o<span>_</span></span><span>opiekun</span></a>
+      <p class="header-note">A personal website. A work in progress.</p>
+      <a class="header-contact" href="mailto:opiekun.matheus@gmail.com"><svg class="icon"><use href="#icon-mail"/></svg> Say hello <svg class="icon"><use href="#icon-arrow"/></svg></a>
+    </header>
+
+    <div class="workspace">
+      <main class="window content-window" id="main" tabindex="-1">
+        <div class="title-bar"><span><svg class="icon"><use href="#icon-folder"/></svg> <span id="content-filename">journal / index</span></span><span class="window-controls" aria-hidden="true"><span class="control-min">_</span><span class="control-max">□</span><span class="control-close">×</span></span></div>
+        <div class="address-bar"><span class="address-label">Address</span><span class="address-value">opiekun / <span id="address-view">journal</span></span><span class="address-status" aria-hidden="true">↵</span></div>
+
+        <section class="view-panel" id="journal" aria-labelledby="journal-title">
+          <div class="section-heading"><div><p class="eyebrow">Software / commerce / finance</p><h1 id="journal-title" tabindex="-1">Journal<span class="pink-period">.</span></h1></div></div>
+          <p class="journal-intro">A space for notes on software, commerce, and finance.</p>
+          <div id="journal-entries" aria-label="Journal entries"></div>
+          <div class="empty-journal" hidden>
+            <div class="empty-illustration" aria-hidden="true"><svg class="paper-art" viewBox="0 0 88 84" shape-rendering="crispEdges"><path d="M16 4h44v8h8v8h8v60H16Z" fill="var(--border)"/><path d="M20 8h36v16h16v52H20Z" fill="var(--surface-raised)"/><path d="M60 12v8h8Z" fill="var(--art-mid)"/><path d="M28 32h36v4H28Zm0 12h28v4H28Zm0 12h20v4H28Z" fill="var(--focus)"/><path d="M4 56h8v8h8v8h-8v8H4v-8H0v-8h4Zm64-56h8v8h8v8h-8v8h-8v-8h-8V8h8Z" fill="var(--sparkle)"/></svg></div>
+            <h2>No posts published yet</h2>
+            <p>Browse the <a href="/#projects" data-view="projects">project folder</a> or read <a href="/#about" data-view="about">about Matheus</a>.</p>
+          </div>
+          <div class="reading-preview-link">
+            <a class="text-link" href="/preview/article/" data-view="article-preview">Preview reading layout <svg class="icon"><use href="#icon-arrow"/></svg></a>
+            <p>Unpublished layout preview, not a journal entry.</p>
+          </div>
+        </section>
+
+        <section class="view-panel" id="projects" aria-labelledby="projects-title" hidden>
+          <div class="section-heading"><div><p class="eyebrow">A few things from my GitHub</p><h1 id="projects-title" tabindex="-1">Projects<span class="pink-period">.</span></h1></div></div>
+          <div class="search-field"><label for="project-search">Find a project</label><div class="search-input-wrap"><svg class="icon"><use href="#icon-search"/></svg><input id="project-search" type="search" placeholder="Try Magento, Docker, or Shell…" autocomplete="off" aria-describedby="project-search-help"></div><p id="project-search-help">Filter by name, technology, or description.</p></div>
+          <div class="project-list">
+            <article class="project-card" data-project><div class="project-heading"><svg class="icon"><use href="#icon-folder"/></svg><h3><a href="https://github.com/opiekun/mg-installer" target="_blank" rel="noopener noreferrer">mg-installer <svg class="icon"><use href="#icon-arrow"/></svg><span class="sr-only"> (opens in a new tab)</span></a></h3><span class="project-tag">SHELL</span></div><p>Shell scripts for setting up Magento. Practical tooling for the local development workflow.</p><span class="project-note">Magento · Setup · Developer tooling</span></article>
+            <article class="project-card" data-project><div class="project-heading"><svg class="icon"><use href="#icon-folder"/></svg><h3><a href="https://github.com/opiekun/magento2-docker" target="_blank" rel="noopener noreferrer">magento2-docker <svg class="icon"><use href="#icon-arrow"/></svg><span class="sr-only"> (opens in a new tab)</span></a></h3><span class="project-tag">DOCKER</span></div><p>Mg2: a Magento Docker toolset for services and local orchestration.</p><span class="project-note">The repository README credits zerocool78.</span></article>
+            <article class="project-card" data-project><div class="project-heading"><svg class="icon"><use href="#icon-folder"/></svg><h3><a href="https://github.com/opiekun/docker-magento" target="_blank" rel="noopener noreferrer">docker-magento <svg class="icon"><use href="#icon-arrow"/></svg><span class="sr-only"> (opens in a new tab)</span></a></h3><span class="project-tag">FORK</span></div><p>A fork of markshust/docker-magento, a Docker development environment for Magento.</p><span class="project-note">Upstream project: markshust/docker-magento</span></article>
+          </div>
+          <p class="project-empty" id="project-empty" role="status" hidden>No projects match that search. Try “Magento” or clear the search.</p>
+          <p class="project-results" id="project-results" role="status" aria-live="polite">3 projects</p>
+        </section>
+
+        <section class="view-panel" id="about" aria-labelledby="about-title" hidden>
+          <div class="section-heading"><div><p class="eyebrow">The person behind @opiekun</p><h1 id="about-title" tabindex="-1">About<span class="pink-period">.</span></h1></div></div>
+          <div class="about-intro"><p>I'm <strong>Matheus</strong>, a Senior Software Engineer based in <strong>Blumenau, Santa Catarina, Brazil</strong>. My work lives where e-commerce, financial applications, and thoughtful software architecture meet.</p><p>I focus on clean architecture and scalable applications, working across Magento 2 / Adobe Commerce, Angular, TypeScript, PHP, C#, and AWS.</p></div>
+          <h3 class="subheading">Where I've been</h3>
+          <ol class="experience-list">
+            <li><div><h4>Vertrau Tecnologia</h4><span class="experience-date">Mar 2026 — present</span></div><p>Software Engineer · Angular standalone components, RxJS, PrimeNG, REST and SignalR with ASP.NET Core. FIDC and receivables workflows.</p></li>
+            <li><div><h4>121eCommerce</h4><span class="experience-date">May 2022 — Dec 2025</span></div><p>Magento customization, modules, themes, and performance.</p></li>
+            <li><div><h4>Compasso UOL</h4><span class="experience-date">Mar 2021 — May 2022</span></div><p>Magento Cloud, REST / GraphQL, and integrations.</p></li>
+            <li><div><h4>Quick Soft Tecnologia</h4><span class="experience-date">Feb 2020 — Mar 2021</span></div><p>C# / .NET applications for receivables.</p></li>
+            <li><div><h4>Signativa</h4><span class="experience-date">Mar 2019 — Jan 2020</span></div><p>Frontend internship · Magento 1.</p></li>
+          </ol>
+          <div class="education-note"><svg class="icon"><use href="#icon-book"/></svg><p><strong>Instituto Federal Catarinense</strong><br>Analise e Desenvolvimento de Sistemas · 2018–2021</p></div>
+          <a class="button about-contact" href="mailto:opiekun.matheus@gmail.com"><svg class="icon"><use href="#icon-mail"/></svg> Let's talk software</a>
+        </section>
+        <section id="resume-document" class="os-resume-document" hidden>
+          <header><h1>Matheus</h1><p>Senior Software Engineer · Magento 2 · JavaScript/TypeScript · PHP · C# · Angular · AWS</p><p>Blumenau, Santa Catarina, Brazil</p><p><a href="mailto:opiekun.matheus@gmail.com">opiekun.matheus@gmail.com</a> · <a href="https://github.com/opiekun" target="_blank" rel="noopener">GitHub</a></p></header>
+          <h2>Summary</h2><p>Software engineer focused on scalable e-commerce, clean architecture, and usable frontend and backend systems. Magento 2 is my core expertise; I also build with Angular, TypeScript, PHP, C#, and AWS.</p>
+          <h2>Experience</h2>
+          <section><h3>Vertrau Tecnologia <span>Mar 2026 – Present</span></h3><p>Software Engineer</p><ul><li>Build enterprise fintech applications for FIDC and receivables management with Angular, TypeScript, PrimeNG, and RxJS.</li><li>Integrate frontend modules with ASP.NET Core services through REST APIs and SignalR.</li><li>Work on credit operations, reconciliation, CNAB processing, and financial dashboards.</li></ul></section>
+          <section><h3>121eCommerce <span>May 2022 – Dec 2025</span></h3><p>Software Engineer</p><ul><li>Developed and optimized Magento 2 stores, custom modules, integrations, and responsive themes.</li><li>Improved site performance, fixed critical bugs, and enhanced user experience.</li></ul></section>
+          <section><h3>Compasso UOL <span>Mar 2021 – May 2022</span></h3><p>Software Engineer</p><ul><li>Deployed and managed Magento 2 stores on Magento Cloud.</li><li>Built REST and GraphQL integrations for payments, shipping, ERP, and CRM systems.</li></ul></section>
+          <section><h3>Quick Soft Tecnologia <span>Feb 2020 – Mar 2021</span></h3><p>Software Engineer</p><ul><li>Built .NET/C# services for FIDC receivables, contract lifecycles, and financial data processing.</li><li>Integrated registradoras and worked with SQL Server and PostgreSQL.</li></ul></section>
+          <section><h3>Signativa <span>Mar 2019 – Jan 2020</span></h3><p>Frontend Developer Intern</p><ul><li>Supported Magento 1 stores, custom modules, and third-party integrations.</li></ul></section>
+          <h2>Education</h2><p>Instituto Federal Catarinense · Analise e Desenvolvimento de Sistemas · 2018–2021</p>
+          <h2>Certifications</h2><ul><li>Microsoft: Programming in HTML5 with JavaScript and CSS3</li><li>Google Professional Cloud Developer</li><li>Oracle Database SQL Certified Associate</li><li>Certified PHP Developer</li><li>MCTS: .NET Framework 2.0, Web Applications</li></ul>
+        </section>
+        <section class="view-panel" id="article-preview" aria-labelledby="article-preview-title" hidden></section>
+        <section class="view-panel" id="article-first-entry" aria-labelledby="article-first-entry-title" hidden></section>
+        <div class="content-status"><span id="content-status">Journal folder · 1 entry</span></div>
+      </main>
+
+      <aside class="sidebar" aria-label="About the author, navigation and current work">
+        <section class="window profile-window" aria-labelledby="profile-title">
+        <div class="title-bar"><span id="profile-title">user_info.exe</span><span class="window-controls" aria-hidden="true"><span class="control-min">_</span><span class="control-close">×</span></span></div>
+        <div class="profile-body">
+          <div class="hero-art" aria-label="Pixel illustration of a raccoon at a computer" role="img">
+            <svg class="raccoon-art" viewBox="0 0 240 224" shape-rendering="crispEdges" aria-hidden="true">
+              <path d="M36 192h168v8H36Z" fill="var(--art-dark)"/>
+              <path d="M52 29h32v8h8v32H52Zm96 0h32v40h-40V37h8Z" fill="var(--art-dark)"/>
+              <path d="M60 37h16v24H60Zm96 0h16v24h-16Z" fill="var(--signal)"/>
+              <path d="M84 45h64v8h24v16h16v16h8v48h-8v24h-16v16h-24v8H84v-8H60v-16H44v-24h-8V85h8V69h16V53h24Z" fill="var(--art-dark)"/>
+              <path d="M84 53h64v8h24v16h8v16h8v32h-8v24h-16v16h-24v8H92v-8H68v-16H52v-24h-8V93h8V77h16V61h16Z" fill="var(--art-mid)"/>
+              <path d="M100 53h32v16h-8v16h-16V69h-8Z" fill="var(--art-light)"/>
+              <path d="M60 85h40v8h8v32H68v-8h-8Zm76 0h36v32h-8v8h-36V93h8Z" fill="var(--art-dark)"/>
+              <path d="M76 93h12v12H76Zm68 0h12v12h-12Z" fill="var(--art-light)"/>
+              <path d="M84 125h64v8h16v16h-16v16H84v-16H68v-16h16Z" fill="var(--art-light)"/>
+              <path d="M104 125h24v8h-8v8h-8v-8h-8Zm0 24h24v8h-24Z" fill="var(--art-dark)"/>
+              <path d="M60 119h16v8H60Zm96 0h16v8h-16Z" fill="var(--signal)"/>
+              <path d="M68 153h96v24h16v16H52v-16h16Z" fill="var(--art-dark)"/>
+              <path d="M60 181h112v12H60Z" fill="var(--title-bar)"/>
+              <path d="M104 144h104v8h8v56H96v-56h8Z" fill="var(--art-dark)"/>
+              <path d="M104 152h104v48H104Z" fill="var(--accent)"/>
+              <path d="m142 165-12 12 12 12 6-6-6-6 6-6Zm28 0-6 6 6 6-6 6 6 6 12-12Z" fill="var(--focus)"/>
+              <path d="M88 208h136v8H88Z" fill="var(--art-dark)"/>
+              <path d="M96 208h120v4H96Z" fill="var(--art-mid)"/>
+              <path d="M32 192h48v-32H48v-8H24v8h-8v16h8v8h8Z" fill="var(--art-dark)"/>
+              <path d="M40 184h32v-16H48v-8H24v16h16Z" fill="var(--art-mid)"/>
+              <path d="M40 160h8v24h-8Zm16 8h8v16h-8Z" fill="var(--art-dark)"/>
+            </svg>
+          </div>
+          <h2>Matheus</h2>
+          <p class="alias">@opiekun</p>
+          <p class="profile-role">Senior Software Engineer</p>
+          <p class="location"><svg class="icon"><use href="#icon-map"/></svg> Brazil</p>
+          <div class="profile-links">
+            <a href="https://github.com/opiekun" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon"><use href="#icon-arrow"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
+          <a class="resume-link" href="/assets/Profile.pdf"><svg class="icon"><use href="#icon-file"/></svg> Read my resume <span class="file-type">PDF</span></a>
+        </div>
+        </section>
+
+        <nav class="window directory-window" aria-labelledby="directory-title">
+          <div class="title-bar"><span id="directory-title">my_directory</span><span class="window-controls" aria-hidden="true"><span class="control-min">_</span></span></div>
+          <div class="directory-links">
+            <a href="/#journal" data-view="journal" aria-current="page"><svg class="icon"><use href="#icon-book"/></svg><span>Journal</span><span class="nav-arrow" aria-hidden="true">›</span></a>
+            <a href="/#projects" data-view="projects"><svg class="icon"><use href="#icon-folder"/></svg><span>Projects</span><span class="nav-arrow" aria-hidden="true">›</span></a>
+            <a href="/#about" data-view="about"><svg class="icon"><use href="#icon-user"/></svg><span>About me</span><span class="nav-arrow" aria-hidden="true">›</span></a>
+          </div>
+          <p class="directory-path">C:\Users\opiekun\</p>
+        </nav>
+        <section class="window now-window" aria-labelledby="now-title">
+          <div class="title-bar"><span id="now-title">currently.txt</span><span aria-hidden="true">···</span></div>
+          <div class="now-body"><span class="eyebrow">Current work</span><p>Angular, .NET &amp; financial workflows.</p><span class="now-company">@ Vertrau Tecnologia</span></div>
+        </section>
+      </aside>
+
+    </div>
+    <footer class="desktop-footer"><a href="mailto:opiekun.matheus@gmail.com">Let's keep in touch <svg class="icon"><use href="#icon-arrow"/></svg></a></footer>
+  </div>
+  <template id="article-layout">
+    <div class="article-navigation"><a class="text-link" href="/#journal" data-view="journal">← Back to journal</a></div>
+    <article class="reading-article">
+      <header class="article-header">
+        <p class="article-label" data-article-label></p>
+        <h1 data-article-title tabindex="-1"></h1>
+        <p class="article-meta" data-article-meta hidden></p>
+        <p class="article-notice" data-article-notice></p>
+        <p class="article-lead" data-article-lead></p>
+      </header>
+      <div class="article-prose" data-article-body></div>
+    </article>
+  </template>
+  <template id="article-first-entry-content">
+    <p>I had a preview article to check the layout, but it was still sample text. No date, no entry in the feed. This is the first actual one.</p>
+    <p>Most of my work is around software, commerce, and finance. I end up with notes on details that took time to find: a request running twice, a status stuck on an old value, or an assumption that was wrong. They usually stay in a PR thread or a random file.</p>
+    <p>I'll put the ones worth keeping here. No point making a long tutorial out of every small fix.</p>
+  </template>
+  <template id="article-preview-content">
+    <nav class="article-contents" aria-label="On this page">
+      <p>On this page</p>
+      <ul>
+        <li><a href="#preview-layout">Reading layout</a></li>
+        <li><a href="#preview-code">Code and quotations</a></li>
+        <li><a href="#preview-notes">Navigation notes</a></li>
+      </ul>
+    </nav>
+    <section aria-labelledby="preview-layout">
+      <h2 id="preview-layout">A layout for reading</h2>
+      <p>This page demonstrates the journal's reading layout. It is separate from the entry feed and has no publication date or author byline.</p>
+      <p>The article body uses a limited line length and generous line spacing. Headings divide the text into sections; the contents links jump to those sections.</p>
+      <h3>Text, lists, and links</h3>
+      <ul>
+        <li>Paragraphs carry the main text.</li>
+        <li>Lists group related details without adding another window.</li>
+        <li><a href="#preview-notes">Underlined links</a> remain distinct from body text.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="preview-code">
+      <h2 id="preview-code">Code and quotations</h2>
+      <p>Inline code such as <code>preload="none"</code> stays within the paragraph. Longer examples have their own scrollable area.</p>
+      <figure class="code-example">
+        <figcaption>Formatting example: the audio element used by this site's native radio player.</figcaption>
+        <pre tabindex="0" aria-label="HTML audio element example"><code>&lt;audio id="music-audio" preload="none" hidden&gt;&lt;/audio&gt;</code></pre>
+      </figure>
+      <p>The following block demonstrates quotation styling. It is sample layout text, not an attributed quotation.</p>
+      <blockquote><p>A reading layout gives paragraphs, examples, and notes distinct places on the page.</p></blockquote>
+    </section>
+    <section aria-labelledby="preview-notes">
+      <h2 id="preview-notes">Navigation notes</h2>
+      <p>The journal, projects, and about views share the same desktop. Opening this preview changes the address without replacing the native radio player.</p>
+      <aside class="article-callout" aria-label="Preview note">
+        <h3>Preview only</h3>
+        <p>This page checks the presentation of future writing. It is not listed as a published entry.</p>
+      </aside>
+      <p>Use <a href="/#journal" data-view="journal">Back to journal</a> to return to the feed. The browser's Back and Forward controls also move between views.</p>
+    </section>
+  </template>
+  <div class="taskbar">
+    <div class="taskbar-inner">
+      <a class="start-button" href="/#journal" data-view="journal"><svg class="icon"><use href="#icon-folder"/></svg> opiekun</a>
+      <nav class="taskbar-tabs" aria-label="Open a folder"><a href="/#journal" data-view="journal" aria-current="page"><svg class="icon"><use href="#icon-book"/></svg> Journal</a><a href="/#projects" data-view="projects"><svg class="icon"><use href="#icon-folder"/></svg> Projects</a><a href="/#about" data-view="about"><svg class="icon"><use href="#icon-user"/></svg> About</a></nav>
+      <section class="music-player" id="music-player" aria-label="Vaporwave radio" data-playing="false">
+        <button class="music-button" id="music-toggle" type="button" aria-label="Play music" aria-pressed="false" aria-controls="music-audio" aria-describedby="music-status" disabled>
+          <svg class="icon music-play-icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg class="icon music-pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="music-details">
+          <p class="music-heading" id="music-title" title="Nightwave Plaza">Nightwave Plaza</p>
+          <p class="music-subtitle"><span id="music-artist" title="Live vaporwave radio">Live vaporwave radio</span><span id="music-status" role="status" aria-live="polite" aria-atomic="true">Ready</span><a class="music-external" id="music-external" href="https://plaza.one/" target="_blank" rel="noopener" title="Open Nightwave Plaza in a new tab">via Nightwave Plaza</a></p>
+        </div>
+        <label class="music-volume-control" for="music-volume"><span>Volume</span><input id="music-volume" type="range" min="0" max="100" step="1" value="30" aria-valuetext="30%" disabled></label>
+        <audio id="music-audio" preload="none" hidden></audio>
+      </section>
+      <time id="desktop-clock" class="desktop-clock" aria-label="Current local time" hidden></time>
+    </div>
+  </div>
+</body>
+</html>
