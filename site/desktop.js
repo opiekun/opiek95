@@ -130,7 +130,7 @@
   const tasks = shell.querySelector('[data-task-windows]');
   const windowPositionKey = 'opiekun-window-positions';
   const rememberedPositions = (() => { try { const value = JSON.parse(localStorage.getItem(windowPositionKey) || '{}'); return new Map(Object.entries(value && typeof value === 'object' && !Array.isArray(value) ? value : {})); } catch { return new Map(); } })();
-  function createWindow({ title: windowTitle, icon = 'computer-2', content, onClose }) {
+  function createWindow({ title: windowTitle, icon = 'computer-2', content, onClose, initialPosition }) {
     const id = ++count;
     const win = document.createElement('section');
     win.className = 'os-window'; win.dataset.window = ''; win.dataset.maximized = 'false';
@@ -173,8 +173,8 @@
       const width = Math.min(win.getBoundingClientRect().width || parseFloat(win.style.width) || 560, area.width);
       const height = Math.min(win.getBoundingClientRect().height || parseFloat(win.style.height) || 360, area.height);
       const saved = rememberedPositions.get(windowTitle);
-      const x = Number.isFinite(saved?.x) ? saved.x : Math.round((area.width - width) / 2);
-      const y = Number.isFinite(saved?.y) ? saved.y : Math.round((area.height - height) / 2);
+      const x = Number.isFinite(saved?.x) ? saved.x : initialPosition === 'top-right' ? area.width - width - 18 : Math.round((area.width - width) / 2);
+      const y = Number.isFinite(saved?.y) ? saved.y : initialPosition === 'top-right' ? 24 : Math.round((area.height - height) / 2);
       win.style.left = `${Math.max(0, Math.min(x, area.width - width))}px`;
       win.style.top = `${Math.max(0, Math.min(y, area.height - height))}px`;
     }
