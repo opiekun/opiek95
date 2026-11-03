@@ -7,8 +7,8 @@ const source = join(project, 'site');
 const output = join(project, '.pages');
 const base = process.env.PAGES_BASE_PATH ?? '/opiek95/';
 
-if (!/^\/[a-zA-Z0-9._-]+\/$/.test(base)) {
-  throw new Error('PAGES_BASE_PATH must look like /repository-name/');
+if (base !== '/' && !/^\/[a-zA-Z0-9._-]+\/$/.test(base)) {
+  throw new Error('PAGES_BASE_PATH must be / or look like /repository-name/');
 }
 
 const rootFiles = (await readdir(source, { withFileTypes: true }))
