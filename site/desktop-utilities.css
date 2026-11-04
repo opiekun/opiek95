@@ -198,6 +198,17 @@
 .os-system-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .os-system-links button, .os-system-sheet fieldset button, .os-system-actions button { min-width: 76px; padding: 4px 8px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; color: #000; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
 .os-system-actions { display: flex; justify-content: flex-end; padding-top: 8px; }
+.os-control-dialog { display: flex; flex-direction: column; gap: 8px; padding: 12px; font: 11px/1.35 "MS Sans Serif", Tahoma, sans-serif; }
+.os-control-dialog fieldset { min-height: 130px; padding: 12px; border: 2px groove #fff; }
+.os-control-dialog legend { padding: 0 4px; }
+.os-control-dialog p { margin: 5px 0 10px; }
+.os-control-dialog label { display: block; }
+.os-control-dialog input[type="checkbox"] { padding: 0; vertical-align: middle; }
+.os-control-dialog dl { display: grid; grid-template-columns: 68px 1fr; gap: 6px; margin: 0; }
+.os-control-dialog dt { font-weight: bold; }
+.os-control-dialog dd { margin: 0; }
+.os-control-dialog a { color: #000080; }
+.os-control-dialog-actions { display: flex; justify-content: flex-end; margin-top: auto; }
 @media (max-width: 520px) { .os-control-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 400px) { .os-control-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .os-dos { display: flex; flex-direction: column; padding: 6px; background: #000; color: #c0c0c0; font: 14px/1.35 "Courier New", monospace; }

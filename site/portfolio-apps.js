@@ -36,8 +36,24 @@
   function openPanel(name) {
     const content = document.createElement('div');
     content.className = 'os-app-content';
-    const title = { journal: 'Journal', projects: 'Projects', about: 'About' }[name];
-    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : 'notepad-1', content, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
+    const frame = document.createElement('div');
+    frame.className = 'os-portfolio-frame';
+    if (name === 'projects') {
+      frame.dataset.projectsView = 'icons';
+      frame.innerHTML = '<div class="os-projects-toolbar" data-projects-toolbar role="group" aria-label="Project view"><span>Projects folder</span><button type="button" data-project-view="icons" aria-checked="true">Icons</button><button type="button" data-project-view="details" aria-checked="false">Details</button></div>';
+      frame.querySelectorAll('[data-project-view]').forEach(button => button.addEventListener('click', () => {
+        frame.dataset.projectsView = button.dataset.projectView;
+        frame.querySelectorAll('[data-project-view]').forEach(item => item.setAttribute('aria-checked', String(item === button)));
+      }));
+    }
+    if (name === 'internet') {
+      frame.innerHTML = '<div class="os-internet-toolbar"><button type="button" data-internet-home>Home</button><button type="button" data-internet-refresh>Refresh</button><label>Address: <input data-internet-address readonly aria-label="Address"></label></div>';
+    }
+    frame.append(content);
+    const title = { journal: 'Journal', projects: 'Projects', about: 'About', internet: 'Internet Explorer' }[name];
+    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : name === 'internet' ? 'control-panel/internet' : 'notepad-1', content: frame, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
+    if (name === 'projects') app.element.classList.add('os-projects-window');
+    if (name === 'internet') app.element.classList.add('os-internet-window');
     if (name === 'about') {
       app.element.classList.add('os-about-window');
       const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
@@ -49,6 +65,10 @@
     }
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
+      if (name === 'internet') {
+        const journalAddress = new URL(shell.querySelector('[data-menu-app="journal"]').getAttribute('href'), location.href);
+        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? journalAddress.href : new URL(`journal/${panel.slice(8)}/`, journalAddress.href.split('#')[0]).href;
+      }
       if (focus) {
         const heading = content.querySelector('h1, h2');
         if (heading) { heading.tabIndex = -1; heading.focus(); }
@@ -81,6 +101,13 @@
         content.append(permalink);
       }
     }
+    if (name === 'internet') {
+      frame.querySelector('[data-internet-home]').addEventListener('click', () => show('journal'));
+      frame.querySelector('[data-internet-refresh]').addEventListener('click', () => {
+        const panel = content.firstElementChild?.id.replace(/^os-copy-\d+-/, '') || 'journal';
+        show(panel);
+      });
+    }
     content.addEventListener('click', event => {
       const link = event.target.closest('a');
       if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || (link.target && link.target !== '_self')) return;
@@ -94,7 +121,7 @@
         event.preventDefault(); event.stopPropagation(); show(view, true);
       }
     });
-    show(name);
+    show(name === 'internet' ? 'journal' : name);
     return app;
   }
 
@@ -174,7 +201,7 @@
     shell.querySelector('[data-start]').setAttribute('aria-expanded', 'false');
     if (name === 'resume') openResume();
     else if (name === 'music') openMusic();
-    else if (['journal', 'projects', 'about'].includes(name)) openPanel(name);
+    else if (['journal', 'projects', 'about', 'internet'].includes(name)) openPanel(name);
   }
   function targetApp(target) {
     const item = target.closest('[data-menu-app], [data-app], .os-icons a[href^="/#"]');

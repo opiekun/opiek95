@@ -13,6 +13,7 @@
   const open = (title, content, icon = 'computer-2') => desktop.windows.open({ title, content, icon });
   const panel = html => { const node = document.createElement('div'); node.className = 'os-utility'; node.innerHTML = html; return node; };
   const launchPortfolio = name => { const target = shell.querySelector(`[data-menu-app="${name}"]`); if (target) target.click(); };
+  shell.dataset.largeLabels = String(get('opiekun-large-labels') === '1');
 
   const wallpapers = { teal: '#087c80', navy: '#173879', plum: '#694358', forest: '#315e50' };
   const images = [
@@ -168,21 +169,48 @@
     content.querySelectorAll('[data-system-open]').forEach(button => button.addEventListener('click', () => launchPortfolio(button.dataset.systemOpen)));
     content.querySelector('[data-system-close]').addEventListener('click', () => app.element.querySelector('[data-window-close]').click());
   }
+  function controlDialog(title, html) {
+    const content = panel(html);
+    content.classList.add('os-control-dialog');
+    const app = open(title, content, 'display_properties-2');
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(390, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(300, area.height || innerHeight - 32)}px`;
+    app.place();
+    content.querySelector('[data-control-dialog-close]').addEventListener('click', () => app.element.querySelector('[data-window-close]').click());
+    return content;
+  }
+  function accessibility() {
+    const content = controlDialog('Accessibility Properties', '<fieldset><legend>Display</legend><label><input type="checkbox" data-large-labels> Use larger desktop and Start menu labels</label></fieldset><p>Label size is saved on this device.</p><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+    const checkbox = content.querySelector('[data-large-labels]');
+    checkbox.checked = shell.dataset.largeLabels === 'true';
+    checkbox.addEventListener('change', () => { shell.dataset.largeLabels = String(checkbox.checked); set('opiekun-large-labels', checkbox.checked ? '1' : '0'); });
+  }
+  function keyboard() {
+    controlDialog('Keyboard Properties', '<fieldset><legend>Desktop shortcuts</legend><dl><dt>Enter</dt><dd>Open a focused shortcut.</dd><dt>Escape</dt><dd>Close the Start menu or a context menu.</dd><dt>Arrow keys</dt><dd>Move or resize a focused window control.</dd></dl></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+  }
+  function mail() {
+    controlDialog('Mail Properties', '<fieldset><legend>Contact</legend><p>Send a message to Matheus:</p><p><a href="mailto:opiekun.matheus@gmail.com">opiekun.matheus@gmail.com</a></p></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+  }
+  function multimedia() {
+    const content = controlDialog('Multimedia Properties', '<fieldset><legend>Audio</legend><p>Listen to Nightwave Plaza from the Music Player.</p><button type="button" data-open-music>Open Music Player</button></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+    content.querySelector('[data-open-music]').addEventListener('click', () => launchPortfolio('music'));
+  }
   function controlPanel() {
     const content = document.createElement('div'); content.className = 'os-control-panel';
     content.innerHTML = '<div class="os-control-menubar" data-control-menubar><details><summary>File</summary><div><button type="button" data-control-close>Close</button></div></details><details><summary>View</summary><div><button type="button" data-control-view="icons">Large Icons</button><button type="button" data-control-view="list">List</button></div></details><details><summary>Help</summary><div><button type="button" data-control-help>About Control Panel</button></div></details></div><div class="os-control-grid" data-control-grid></div><div class="os-control-status" data-control-status role="status">Select an icon to view its description.</div>';
     const items = [
-      ['Accessibility Options', 'accessibility', 'accessibility', 'Accessibility options are unavailable in this simulation.'],
+      ['Accessibility Options', 'accessibility', 'accessibility', 'Changes desktop label size.'],
       ['Add New Hardware', 'hardware', 'hardware', 'Hardware settings are unavailable in this simulation.'],
       ['Add/Remove Programs', 'programs', 'programs', 'Program installation is unavailable in this simulation.'],
       ['Date/Time', 'date', 'date-time', 'Displays the date and time from your device.'],
       ['Display', 'display', 'display', 'Changes your desktop background and window appearance.'],
       ['Fonts', 'fonts', 'fonts', 'Font management is unavailable in this simulation.'],
-      ['Internet', 'internet', 'internet', 'Internet settings are unavailable in this simulation.'],
-      ['Keyboard', 'keyboard', 'keyboard', 'Keyboard settings are unavailable in this simulation.'],
-      ['Mail', 'mail', 'mail', 'Mail settings are unavailable in this simulation.'],
+      ['Internet', 'internet', 'internet', 'Opens the journal in Internet Explorer.'],
+      ['Keyboard', 'keyboard', 'keyboard', 'Shows desktop keyboard shortcuts.'],
+      ['Mail', 'mail', 'mail', 'Opens contact information.'],
       ['Mouse', 'mouse', 'mouse', 'Mouse settings are unavailable in this simulation.'],
-      ['Multimedia', 'multimedia', 'multimedia', 'Multimedia settings are unavailable in this simulation.'],
+      ['Multimedia', 'multimedia', 'multimedia', 'Opens the Music Player.'],
       ['Network', 'network', 'network', 'Network settings are unavailable in this simulation.'],
       ['Passwords', 'passwords', null, 'Password settings are unavailable in this simulation.'],
       ['Power', 'power', 'power', 'Power settings are unavailable in this simulation.'],
@@ -197,7 +225,7 @@
       const icon = document.createElement('img'); icon.alt = ''; icon.src = image ? `/assets/icons/control-panel/${image}.png` : `/assets/icons/${action === 'system' ? 'computer-2' : 'users-0'}.png`;
       const caption = document.createElement('span'); caption.textContent = label; button.append(icon, caption); grid.append(button);
     });
-    const controls = { display: settings, sounds, date: dateTime, system: systemProperties };
+    const controls = { accessibility, display: settings, internet: () => launchPortfolio('internet'), keyboard, mail, multimedia, sounds, date: dateTime, system: systemProperties };
     const status = content.querySelector('[data-control-status]');
     content.addEventListener('focusin', event => { const button = event.target.closest('[data-control]'); if (button) status.textContent = button.dataset.description; });
     content.addEventListener('click', event => { const button = event.target.closest('[data-control]'); if (!button) return; if (controls[button.dataset.control]) controls[button.dataset.control](); else status.textContent = button.dataset.description; });
