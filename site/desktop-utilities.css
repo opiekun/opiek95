@@ -16,8 +16,16 @@
 .os-shell input:disabled, .os-shell select:disabled, .os-shell textarea:disabled { color: #808080; background-color: #c0c0c0; }
 .os-utility-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
 .os-utility-toolbar { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-.os-note-label { display: flex; flex-direction: column; gap: 4px; height: calc(100% - 40px); }
-.os-note-label textarea { flex: 1; min-height: 100px; resize: none; }
+.os-notepad { display: flex; flex: 1; min-width: 0; min-height: 0; flex-direction: column; background: #c0c0c0; }
+.os-notepad > textarea { flex: 1; min-width: 0; min-height: 0; overflow: scroll; margin: 3px; padding: 4px; resize: none; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff; color: #000; color-scheme: light; scrollbar-color: #c0c0c0 #dfdfdf; font: 14px/1.3 "Courier New", monospace; }
+.os-notepad > textarea[wrap="off"] { white-space: pre; }
+.os-notepad > textarea::-webkit-scrollbar-track { border: 1px solid #808080; background: #dfdfdf; }
+.os-notepad > textarea::-webkit-scrollbar-thumb { border: 2px solid #fff; background: #c0c0c0; }
+.os-notepad > textarea::-webkit-scrollbar-corner { background: #c0c0c0; }
+.os-note-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.os-note-find-dialog { display: flex; flex-wrap: wrap; align-content: center; align-items: center; gap: 8px; padding: 12px; background: #c0c0c0; font-size: 12px; }
+.os-note-find-dialog label { display: flex; flex: 1 0 100%; align-items: center; gap: 8px; }
+.os-note-find-dialog input { flex: 1; min-width: 0; }
 .os-context-menu { position: absolute; z-index: 10001; width: 190px; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
 .os-context-menu button { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 22px; padding: 3px 15px 3px 20px; border: 0; background: transparent; color: #000; text-align: left; white-space: nowrap; }
 .os-context-menu button:hover:not(:disabled), .os-context-menu button:focus-visible:not(:disabled) { background: #000080; color: white; outline: 0; }
@@ -148,14 +156,21 @@
 .os-shell[data-window-color="slate"] .os-preview-message { background: #9ca8b5; }
 .os-shell[data-window-color="sand"] .os-preview-message { background: #d0c5aa; }
 .os-control-panel { display: flex; flex: 1; min-width: 0; min-height: 0; flex-direction: column; background: #c0c0c0; color: #000; }
-:is(.os-control-menubar, .os-explorer-menubar) { display: flex; flex: none; height: 22px; padding: 1px 3px; border-bottom: 1px solid #808080; }
-:is(.os-control-menubar, .os-explorer-menubar) details { position: relative; }
-:is(.os-control-menubar, .os-explorer-menubar) summary { display: block; padding: 2px 8px; list-style: none; cursor: pointer; }
-:is(.os-control-menubar, .os-explorer-menubar) summary::-webkit-details-marker { display: none; }
-:is(.os-control-menubar, .os-explorer-menubar) details[open] summary, :is(.os-control-menubar, .os-explorer-menubar) summary:hover { background: #000080; color: #fff; }
-:is(.os-control-menubar, .os-explorer-menubar) details > div { position: absolute; z-index: 2; top: 19px; left: 0; min-width: 135px; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; }
-:is(.os-control-menubar, .os-explorer-menubar) details button { display: block; width: 100%; padding: 4px 10px; border: 0; background: none; color: #000; text-align: left; white-space: nowrap; }
-:is(.os-control-menubar, .os-explorer-menubar) details button:hover, :is(.os-control-menubar, .os-explorer-menubar) details button:focus-visible { background: #000080; color: #fff; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) { display: flex; flex: none; height: 22px; padding: 1px 3px; border-bottom: 1px solid #808080; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details { position: relative; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) summary { display: block; padding: 2px 8px; list-style: none; cursor: pointer; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) summary::-webkit-details-marker { display: none; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details[open] summary, :is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) summary:hover { background: #000080; color: #fff; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details > div { position: absolute; z-index: 2; top: 19px; left: 0; min-width: 135px; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details button { display: flex; justify-content: space-between; gap: 16px; width: 100%; padding: 4px 10px; border: 0; background: none; color: #000; text-align: left; white-space: nowrap; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details button:hover:not(:disabled), :is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details button:focus-visible:not(:disabled) { background: #000080; color: #fff; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details button:disabled { color: #808080; text-shadow: 1px 1px #fff; }
+:is(.os-control-menubar, .os-explorer-menubar, .os-notepad-menubar) details hr { border: 0; border-top: 1px solid #808080; border-bottom: 1px solid #fff; margin: 3px 2px; }
+.os-notepad-menubar details > div { min-width: 127px; }
+.os-notepad-menubar details button { min-height: 18px; padding: 2px 7px; font-size: 11px; line-height: 14px; }
+.os-notepad-menubar details hr { margin: 2px; }
+.os-notepad-menubar [data-note-word-wrap] { position: relative; padding-left: 20px; }
+.os-notepad-menubar [data-note-word-wrap][aria-checked="true"]::before { content: "✓"; position: absolute; left: 7px; }
 .os-control-grid { display: grid; flex: 1; min-height: 0; grid-template-columns: repeat(5, minmax(0, 1fr)); align-content: start; gap: 5px 0; overflow: auto; margin: 2px 3px 0; padding: 5px 4px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff; }
 .os-control-item { display: flex; align-items: center; flex-direction: column; gap: 3px; min-width: 0; min-height: 67px; padding: 1px 2px; border: 1px solid transparent; background: none; color: #000; text-align: center; }
 .os-control-item img { width: 32px; height: 32px; flex: none; object-fit: contain; image-rendering: pixelated; }

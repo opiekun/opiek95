@@ -186,11 +186,101 @@
     content.querySelector('[data-control-help]').addEventListener('click', () => { status.textContent = 'Control Panel contains simulated settings for this desktop.'; });
   }
   function notepad() {
-    const content = panel('<div class="os-utility-toolbar"><button type="button" data-note-save>Save</button><button type="button" data-note-clear>Clear</button><span role="status" aria-live="polite"></span></div><label class="os-note-label">Notepad<textarea data-notepad aria-label="Notepad text"></textarea></label>');
-    const text = content.querySelector('textarea'); text.value = get('opiekun-notepad') || '';
-    content.querySelector('[data-note-save]').addEventListener('click', () => { content.querySelector('[role=status]').textContent = set('opiekun-notepad', text.value) ? 'Saved on this device.' : 'Unable to save on this device.'; });
-    content.querySelector('[data-note-clear]').addEventListener('click', () => { text.value = ''; text.focus(); });
-    open('Notepad', content, 'notepad-1'); text.focus();
+    const content = document.createElement('div');
+    content.className = 'os-notepad';
+    content.innerHTML = `<div class="os-notepad-menubar">
+      <details><summary>File</summary><div><button type="button" data-note-new>New</button><button type="button" data-note-open>Open...</button><button type="button" data-note-save>Save</button><button type="button" data-note-save-as>Save As...</button><hr><button type="button" data-note-exit>Exit</button></div></details>
+      <details><summary>Edit</summary><div><button type="button" data-note-undo disabled>Undo <span>Ctrl+Z</span></button><hr><button type="button" data-note-cut>Cut <span>Ctrl+X</span></button><button type="button" data-note-copy>Copy <span>Ctrl+C</span></button><button type="button" data-note-paste>Paste <span>Ctrl+V</span></button><button type="button" data-note-delete>Delete <span>Del</span></button><hr><button type="button" data-note-select-all>Select All</button><button type="button" data-note-time-date>Time/Date <span>F5</span></button><hr><button type="button" data-note-word-wrap role="menuitemcheckbox" aria-checked="false">Word Wrap</button></div></details>
+      <details><summary>Search</summary><div><button type="button" data-note-find>Find...</button><button type="button" data-note-find-again>Find Next <span>F3</span></button></div></details>
+      <details><summary>Help</summary><div><button type="button" data-note-about>About Notepad</button></div></details>
+    </div><textarea data-notepad aria-label="Notepad text" wrap="off" spellcheck="false"></textarea><input type="file" data-note-file accept=".txt,text/plain" hidden><span class="os-note-status" role="status" aria-live="polite"></span>`;
+    const text = content.querySelector('[data-notepad]');
+    text.value = get('opiekun-notepad') || '';
+    const app = open('Untitled - Notepad', content, 'notepad-1');
+    const status = content.querySelector('[role=status]');
+    const history = [];
+    let previous = text.value;
+    let filename = 'Untitled';
+    let clipboard = '';
+    let lastQuery = '';
+    const button = name => content.querySelector(`[data-note-${name}]`);
+    const selection = () => text.value.slice(text.selectionStart, text.selectionEnd);
+    function updateEdit() {
+      const hasSelection = text.selectionStart !== text.selectionEnd;
+      for (const name of ['cut', 'copy', 'delete']) button(name).disabled = !hasSelection;
+      button('undo').disabled = !history.length;
+      button('paste').disabled = !clipboard;
+    }
+    function change(value, start = text.selectionStart, end = text.selectionEnd) {
+      const before = text.value;
+      text.setRangeText(value, start, end, 'end');
+      if (text.value !== before) { history.push(before); previous = text.value; }
+      text.focus(); updateEdit();
+    }
+    function findNext() {
+      if (!lastQuery) return;
+      const source = text.value.toLowerCase(), query = lastQuery.toLowerCase();
+      let index = source.indexOf(query, text.selectionEnd);
+      if (index < 0) index = source.indexOf(query);
+      if (index < 0) { status.textContent = `Cannot find ${lastQuery}.`; return; }
+      text.focus(); text.setSelectionRange(index, index + lastQuery.length); updateEdit();
+    }
+    function find() {
+      const dialog = document.createElement('div');
+      dialog.className = 'os-note-find-dialog';
+      dialog.innerHTML = '<label>Find what: <input data-note-find-query></label><button type="button" data-note-find-next>Find Next</button><button type="button" data-note-find-close>Cancel</button>';
+      const search = dialog.querySelector('[data-note-find-query]');
+      search.value = lastQuery;
+      const popup = open('Find', dialog, 'notepad-1');
+      popup.element.style.width = '330px'; popup.element.style.height = '130px'; popup.place();
+      const submit = () => { lastQuery = search.value; findNext(); };
+      dialog.querySelector('[data-note-find-next]').addEventListener('click', submit);
+      search.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); submit(); } });
+      dialog.querySelector('[data-note-find-close]').addEventListener('click', () => popup.element.querySelector('[data-window-close]').click());
+      search.focus();
+    }
+    function bind(name, action) {
+      button(name).addEventListener('click', () => {
+        action();
+        content.querySelectorAll('.os-notepad-menubar details').forEach(menu => { menu.open = false; });
+      });
+    }
+    text.addEventListener('input', () => { if (text.value !== previous) { history.push(previous); previous = text.value; } updateEdit(); });
+    for (const type of ['select', 'click', 'keyup']) text.addEventListener(type, updateEdit);
+    text.addEventListener('keydown', event => {
+      const command = event.key === 'F5' ? 'time-date' : event.key === 'F3' ? 'find-again' : event.ctrlKey && !event.altKey ? ({ n: 'new', o: 'open', s: 'save', f: 'find', z: 'undo' })[event.key.toLowerCase()] : null;
+      if (command) { event.preventDefault(); button(command).click(); }
+    });
+    bind('new', () => { text.value = ''; previous = ''; history.length = 0; filename = 'Untitled'; app.setTitle('Untitled - Notepad'); status.textContent = ''; text.focus(); updateEdit(); });
+    bind('open', () => button('file').click());
+    button('file').addEventListener('change', async event => {
+      const file = event.target.files?.[0]; if (!file) return;
+      try {
+        text.value = await file.text(); previous = text.value; history.length = 0;
+        filename = file.name; app.setTitle(`${filename} - Notepad`); status.textContent = `Opened ${filename}.`; text.focus(); updateEdit();
+      } catch { status.textContent = 'Could not open this file.'; }
+    });
+    bind('save', () => { status.textContent = set('opiekun-notepad', text.value) ? 'Saved in this browser.' : 'Unable to save in this browser.'; });
+    bind('save-as', () => {
+      const name = filename === 'Untitled' ? 'Note.txt' : filename;
+      const url = URL.createObjectURL(new Blob([text.value], { type: 'text/plain;charset=utf-8' }));
+      const link = document.createElement('a'); link.href = url; link.download = name; link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      filename = name; app.setTitle(`${filename} - Notepad`); status.textContent = `Downloaded ${filename}.`;
+    });
+    bind('exit', () => app.element.querySelector('[data-window-close]').click());
+    bind('undo', () => { if (!history.length) return; text.value = history.pop(); previous = text.value; text.focus(); updateEdit(); });
+    bind('copy', () => { clipboard = selection(); if (clipboard) navigator.clipboard?.writeText(clipboard).catch(() => {}); text.focus(); updateEdit(); });
+    bind('cut', () => { clipboard = selection(); if (clipboard) { navigator.clipboard?.writeText(clipboard).catch(() => {}); change(''); } });
+    bind('paste', async () => { let value = clipboard; try { value = await navigator.clipboard?.readText() || value; } catch {} if (value) change(value); });
+    bind('delete', () => change(''));
+    bind('select-all', () => { text.select(); updateEdit(); });
+    bind('time-date', () => change(`${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}`));
+    bind('word-wrap', () => { const wraps = text.getAttribute('wrap') !== 'off'; text.setAttribute('wrap', wraps ? 'off' : 'soft'); button('word-wrap').setAttribute('aria-checked', String(!wraps)); text.focus(); });
+    bind('find', find);
+    bind('find-again', findNext);
+    bind('about', () => open('About Notepad', panel('<h2>Notepad</h2><p>Write plain text. Save keeps it in this browser; Save As downloads a text file.</p>'), 'notepad-1'));
+    updateEdit(); text.focus();
   }
   function about() { open('About opiekun 95', panel('<h2>opiekun 95</h2><p>Explore the journal, projects, Resume and Music Player from the desktop or Start menu.</p>')); }
   function help() { open('Help', panel('<h2>Desktop Help</h2><p>Double-click a desktop shortcut, or focus it and press Enter. On touch screens, tap once. Drag shortcuts to move them; positions are saved on this device.</p><p>Use the title bar to move a window, the corner to resize it, and the taskbar to restore a minimized window. Arrow keys also move or resize focused controls.</p><p>Right-click the desktop to arrange icons or open Display Properties. Right-click a shortcut to open it or move it to the Recycle Bin. Run accepts notepad, control, explorer, help and about.</p>')); }
