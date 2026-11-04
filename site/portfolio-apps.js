@@ -140,10 +140,15 @@
     if (doomWindow?.element.isConnected) { doomWindow.element.hidden = false; doomWindow.focus(); return; }
     const content = document.createElement('div');
     content.className = 'os-doom';
-    content.innerHTML = '<div class="os-doom-toolbar"><span>Freedoom: Phase 1</span><button type="button" data-doom-fullscreen>Full screen</button></div><iframe data-doom-frame title="Doom game" src="/assets/doom/index.html" allow="fullscreen" allowfullscreen></iframe>';
+    content.innerHTML = '<div class="os-doom-toolbar"><span data-doom-title>Doom shareware: Episode 1</span><button type="button" data-doom-fullscreen>Full screen</button></div><iframe data-doom-frame title="Doom game" src="/assets/doom/index.html" allow="fullscreen" allowfullscreen></iframe>';
     const frame = content.querySelector('[data-doom-frame]');
+    const updateTitle = event => {
+      if (event.source !== frame.contentWindow || event.origin !== location.origin || event.data?.type !== 'opiek95-doom-selection') return;
+      content.querySelector('[data-doom-title]').textContent = event.data.title;
+    };
+    window.addEventListener('message', updateTitle);
     content.querySelector('[data-doom-fullscreen]').addEventListener('click', () => frame.requestFullscreen?.());
-    const app = desktop.windows.open({ title: 'Doom', icon: 'executable-0', content, onClose: () => { doomWindow = null; } });
+    const app = desktop.windows.open({ title: 'Doom', icon: 'executable-0', content, onClose: () => { window.removeEventListener('message', updateTitle); doomWindow = null; } });
     doomWindow = app;
     const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
     app.element.style.width = `${Math.min(760, area.width || innerWidth)}px`;

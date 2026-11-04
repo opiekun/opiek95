@@ -5,10 +5,19 @@
   const play = document.getElementById('play');
   const status = document.getElementById('status');
   const gameData = document.getElementById('game-data');
+  const edition = document.getElementById('edition');
   let loaded = false;
   let started = false;
   let selectedWad = gameData.value;
   let saveDatabase = null;
+
+  function updateSelection() {
+    const original = gameData.value === 'doom1.wad';
+    edition.textContent = original ? 'The original 1993 game · Shareware Episode 1' : 'Free original campaign · Phase 1';
+    window.parent.postMessage({ type: 'opiek95-doom-selection', title: original ? 'Doom shareware: Episode 1' : 'Freedoom: Phase 1' }, location.origin);
+  }
+  gameData.addEventListener('change', updateSelection);
+  updateSelection();
 
   function openSaveDatabase() {
     if (!window.indexedDB) return Promise.resolve(null);
@@ -49,7 +58,7 @@
     loaded = true;
     play.disabled = false;
     play.textContent = 'Play';
-    status.textContent = 'Ready. Click Play, then use the keyboard or touch controls.';
+    status.textContent = 'Loaded. Press Play to begin.';
   }
 
   window.Module = {
