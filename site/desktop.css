@@ -115,7 +115,7 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-task-windows { display: flex; flex: 1; gap: 3px; min-width: 0; overflow-x: auto; }
 .os-task-windows button { flex: 0 1 160px; min-width: 90px; height: 24px; overflow: hidden; padding: 2px 6px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset -1px -1px #808080; text-align: left; white-space: nowrap; text-overflow: ellipsis; }
 .os-task-windows button.is-active { border-color: #808080 #fff #fff #808080; background: #dfdfdf; box-shadow: inset 1px 1px #000; font-weight: bold; }
-.os-clock { flex: none; height: 22px; padding: 2px 8px; border: 2px solid; border-color: #808080 #fff #fff #808080; white-space: nowrap; }
+.os-clock { flex: none; height: 22px; padding: 2px 8px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #c0c0c0; color: #000; white-space: nowrap; }
 .os-start-menu { position: absolute; z-index: 10000; bottom: 30px; left: 2px; display: flex; width: 225px; min-height: 225px; padding: 2px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
 .os-start-brand { display: flex; align-items: end; padding: 5px; background: #808080; color: #c0c0c0; font-size: 20px; writing-mode: vertical-rl; transform: rotate(180deg); }
 .os-start-brand b { color: #fff; }

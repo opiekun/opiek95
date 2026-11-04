@@ -142,6 +142,32 @@
     content.querySelector('[data-current-time]').textContent = now.toLocaleTimeString();
     open('Date/Time Properties', content);
   }
+  function systemProperties() {
+    const content = document.createElement('div');
+    content.className = 'os-system-properties';
+    content.innerHTML = `<div class="os-system-tabs" role="tablist" aria-label="System Properties">
+      <button type="button" role="tab" data-system-tab="general" aria-selected="true">General</button>
+      <button type="button" role="tab" data-system-tab="devices" aria-selected="false">Device Manager</button>
+      <button type="button" role="tab" data-system-tab="profiles" aria-selected="false">Hardware Profiles</button>
+      <button type="button" role="tab" data-system-tab="performance" aria-selected="false">Performance</button>
+    </div><div class="os-system-sheet">
+      <section data-system-page="general" role="tabpanel"><div class="os-system-summary"><img src="/assets/icons/computer-2.png" alt=""><div><strong>opiekun 95</strong><span>Personal portfolio desktop</span></div></div><fieldset><legend>Registered to:</legend><p>Matheus<br>Software Engineer · Blumenau, Brazil</p></fieldset><p>Explore work through the tabs above or the desktop icons.</p></section>
+      <section data-system-page="devices" role="tabpanel" hidden><p>Installed components:</p><ul class="os-system-tree"><li>▣ Commerce<ul><li>Magento 2 / Adobe Commerce</li><li>PHP</li></ul></li><li>▣ Frontend<ul><li>Angular</li><li>TypeScript</li></ul></li><li>▣ Applications<ul><li>C# / .NET</li><li>AWS</li></ul></li></ul></section>
+      <section data-system-page="profiles" role="tabpanel" hidden><p>Work profile:</p><fieldset><legend>Software Engineering</legend><p>Commerce platforms, financial applications, and software architecture.</p><button type="button" data-system-open="resume">Open Resume</button></fieldset></section>
+      <section data-system-page="performance" role="tabpanel" hidden><p>Portfolio shortcuts:</p><div class="os-system-links"><button type="button" data-system-open="projects">Projects</button><button type="button" data-system-open="journal">Journal</button><button type="button" data-system-open="about">About</button></div><p>Use these to explore the work and notes on this desktop.</p></section>
+    </div><div class="os-system-actions"><button type="button" data-system-close>OK</button></div>`;
+    const app = open('System Properties', content, 'computer-2');
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(410, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(365, area.height || innerHeight - 32)}px`;
+    app.place();
+    content.querySelectorAll('[data-system-tab]').forEach(tab => tab.addEventListener('click', () => {
+      content.querySelectorAll('[data-system-tab]').forEach(button => button.setAttribute('aria-selected', String(button === tab)));
+      content.querySelectorAll('[data-system-page]').forEach(page => { page.hidden = page.dataset.systemPage !== tab.dataset.systemTab; });
+    }));
+    content.querySelectorAll('[data-system-open]').forEach(button => button.addEventListener('click', () => launchPortfolio(button.dataset.systemOpen)));
+    content.querySelector('[data-system-close]').addEventListener('click', () => app.element.querySelector('[data-window-close]').click());
+  }
   function controlPanel() {
     const content = document.createElement('div'); content.className = 'os-control-panel';
     content.innerHTML = '<div class="os-control-menubar" data-control-menubar><details><summary>File</summary><div><button type="button" data-control-close>Close</button></div></details><details><summary>View</summary><div><button type="button" data-control-view="icons">Large Icons</button><button type="button" data-control-view="list">List</button></div></details><details><summary>Help</summary><div><button type="button" data-control-help>About Control Panel</button></div></details></div><div class="os-control-grid" data-control-grid></div><div class="os-control-status" data-control-status role="status">Select an icon to view its description.</div>';
@@ -163,7 +189,7 @@
       ['Printers', 'printers', 'printers', 'Printer settings are unavailable in this simulation.'],
       ['Regional Settings', 'regional', 'regional', 'Regional settings are unavailable in this simulation.'],
       ['Sounds', 'sounds', 'sounds', 'Changes the startup sound preference.'],
-      ['System', 'system', null, 'System hardware details are unavailable in this simulation.']
+      ['System', 'system', null, 'View portfolio system properties.']
     ];
     const grid = content.querySelector('[data-control-grid]');
     items.forEach(([label, action, image, description]) => {
@@ -171,7 +197,7 @@
       const icon = document.createElement('img'); icon.alt = ''; icon.src = image ? `/assets/icons/control-panel/${image}.png` : `/assets/icons/${action === 'system' ? 'computer-2' : 'users-0'}.png`;
       const caption = document.createElement('span'); caption.textContent = label; button.append(icon, caption); grid.append(button);
     });
-    const controls = { display: settings, sounds, date: dateTime };
+    const controls = { display: settings, sounds, date: dateTime, system: systemProperties };
     const status = content.querySelector('[data-control-status]');
     content.addEventListener('focusin', event => { const button = event.target.closest('[data-control]'); if (button) status.textContent = button.dataset.description; });
     content.addEventListener('click', event => { const button = event.target.closest('[data-control]'); if (!button) return; if (controls[button.dataset.control]) controls[button.dataset.control](); else status.textContent = button.dataset.description; });
@@ -477,7 +503,7 @@
   arrangeMenu.addEventListener('keydown', event => { if (event.key === 'ArrowLeft') { event.preventDefault(); arrangeMenu.classList.remove('is-open'); arrangeButton.focus(); } });
   context.querySelector('[data-context-delete]').addEventListener('click', () => { const index = shortcuts.indexOf(selected); if (index >= 0 && !recycled.includes(index)) recycled.push(index); syncBin(); context.hidden = true; bin.focus(); });
   context.querySelector('[data-context-properties]').addEventListener('click', () => { context.hidden = true; settings(); });
-  context.querySelector('[data-context-icon-properties]').addEventListener('click', () => { if (!selected) return; context.hidden = true; const content = panel('<h2 data-shortcut-name></h2><p>Type: Desktop shortcut</p><p data-shortcut-target></p>'); const name = selected.textContent.trim(); content.querySelector('[data-shortcut-name]').textContent = name; content.querySelector('[data-shortcut-target]').textContent = selected.getAttribute('href') ? `Target: ${selected.getAttribute('href')}` : `Target: ${name}`; open(`${name} Properties`, content); });
+  context.querySelector('[data-context-icon-properties]').addEventListener('click', () => { if (!selected) return; context.hidden = true; if (selected.matches('[data-open-computer]')) { systemProperties(); return; } const content = panel('<h2 data-shortcut-name></h2><p>Type: Desktop shortcut</p><p data-shortcut-target></p>'); const name = selected.textContent.trim(); content.querySelector('[data-shortcut-name]').textContent = name; content.querySelector('[data-shortcut-target]').textContent = selected.getAttribute('href') ? `Target: ${selected.getAttribute('href')}` : `Target: ${name}`; open(`${name} Properties`, content); });
   context.querySelectorAll('[data-context-arrange]').forEach(button => button.addEventListener('click', () => { const sorted = [...iconItems].sort((a, b) => button.dataset.contextArrange === 'name' ? a.textContent.localeCompare(b.textContent) : (a.tagName === 'BUTTON') - (b.tagName === 'BUTTON') || a.textContent.localeCompare(b.textContent)); arrangeIcons(sorted); context.hidden = true; }));
   context.querySelector('[data-context-lineup]').addEventListener('click', () => { lineUpIcons(); context.hidden = true; });
   context.querySelector('[data-context-refresh]').addEventListener('click', () => { applyWallpaper(workspace.dataset.wallpaper); context.hidden = true; });
