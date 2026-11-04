@@ -4,14 +4,17 @@
   const launcher = document.getElementById('launcher');
   const play = document.getElementById('play');
   const status = document.getElementById('status');
+  const gameData = document.getElementById('game-data');
   let loaded = false;
   let started = false;
+  let selectedWad = gameData.value;
   let saveDatabase = null;
 
   function openSaveDatabase() {
     if (!window.indexedDB) return Promise.resolve(null);
     return new Promise(resolve => {
-      const request = indexedDB.open('opiek95-freedoom-saves', 1);
+      const databaseName = selectedWad === 'freedoom1.wad' ? 'opiek95-freedoom-saves' : 'opiek95-doom-shareware-saves';
+      const request = indexedDB.open(databaseName, 1);
       request.onupgradeneeded = () => request.result.createObjectStore('files', { keyPath: 'name' });
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => resolve(null);
@@ -58,7 +61,7 @@
     preRun() {
       const fs = window.Module.FS;
       fs.mkdir('/savefiles');
-      fs.createPreloadedFile('', 'freedoom1.wad', 'freedoom1.wad', true, true);
+      fs.createPreloadedFile('', selectedWad, selectedWad, true, true);
       fs.createPreloadedFile('', 'default.cfg', 'default.cfg', true, true);
     },
     onRuntimeInitialized() { restoreSaves().then(ready); },
@@ -68,17 +71,19 @@
   play.addEventListener('click', () => {
     if (!loaded) {
       play.disabled = true;
+      selectedWad = gameData.value;
+      gameData.disabled = true;
       status.textContent = 'Loading engine and game data…';
       const script = document.createElement('script');
       script.src = 'websockets-doom.js';
-      script.addEventListener('error', () => { status.textContent = 'Could not load the game engine.'; play.disabled = false; });
+      script.addEventListener('error', () => { status.textContent = 'Could not load the game engine.'; play.disabled = false; gameData.disabled = false; });
       document.body.append(script);
       return;
     }
     if (started) return;
     try {
       canvas.focus();
-      window.callMain(['-iwad', 'freedoom1.wad', '-window', '-nogui', '-nomusic', '-config', 'default.cfg', '-savedir', '/savefiles']);
+      window.callMain(['-iwad', selectedWad, '-window', '-nogui', '-nomusic', '-config', 'default.cfg', '-savedir', '/savefiles']);
       started = true;
       launcher.hidden = true;
       setInterval(persistSaves, 5000);

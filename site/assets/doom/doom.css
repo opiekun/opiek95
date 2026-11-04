@@ -8,6 +8,8 @@ canvas { display: block; width: 100%; height: 100%; object-fit: contain; image-r
 .launcher[hidden] { display: none; }
 .launcher h1 { margin: 0; color: #d84a39; font: bold clamp(24px, 7vw, 56px)/1 "Arial Black", Impact, sans-serif; letter-spacing: .12em; }
 .launcher p { margin: 7px 0; }
+.launcher label { margin: 12px 0 4px; }
+.launcher select { max-width: 100%; padding: 4px; border: 2px solid; border-color: #555 #fff #fff #555; border-radius: 0; background: #fff; color: #000; font: inherit; }
 .launcher button, .touch-controls button { padding: 7px 14px; border: 2px solid; border-color: #fff #555 #555 #fff; border-radius: 0; background: #c0c0c0; color: #000; }
 .launcher button { min-width: 115px; margin: 12px 0; font-weight: bold; }
 .launcher button:disabled { color: #777; cursor: default; }

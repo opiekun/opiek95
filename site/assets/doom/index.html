@@ -13,9 +13,13 @@
       <canvas id="canvas" tabindex="0" aria-label="Doom game screen"></canvas>
       <div class="launcher" id="launcher">
         <h1>DOOM</h1>
-        <p>Freedoom: Phase 1</p>
+        <label for="game-data">Game data</label>
+        <select id="game-data">
+          <option value="doom1.wad">Doom (1993) — Shareware Episode 1</option>
+          <option value="freedoom1.wad">Freedoom — Phase 1</option>
+        </select>
         <button id="play" type="button">Load game</button>
-        <p id="status" role="status" aria-live="polite">Game files load after you press the button. About 35 MB.</p>
+        <p id="status" role="status" aria-live="polite">Game files load after you press the button.</p>
       </div>
     </div>
     <div class="help">Arrows: move · Ctrl: fire · Space: use · Shift: run · Esc: menu</div>
