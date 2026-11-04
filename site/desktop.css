@@ -127,12 +127,13 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-start-group { position: relative; }
 .os-start-group > button { width: 100%; }
 .os-start-group > button::after { content: '▶'; margin-left: auto; font-size: 9px; }
-.os-start-submenu { position: absolute; z-index: 1; bottom: 0; left: calc(100% - 1px); display: none; min-width: 190px; max-height: min(75vh, 480px); overflow: auto; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
-.os-start-group:hover > .os-start-submenu, .os-start-group:focus-within > .os-start-submenu, .os-start-group > button[aria-expanded="true"] + .os-start-submenu { display: block; }
+.os-start-submenu { position: absolute; z-index: 1; bottom: 0; left: calc(100% - 1px); display: none; min-width: 190px; padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
+.os-start-group:hover > .os-start-submenu, .os-start-group > button[aria-expanded="true"] + .os-start-submenu { display: block; }
 .os-start-submenu a, .os-start-submenu button { width: 100%; white-space: nowrap; }
 .os-start-divider { height: 2px; margin: 3px 5px; border-top: 1px solid #808080; border-bottom: 1px solid #fff; }
 .os-start-menu { overflow: visible; }
 @media (max-width: 480px) { .os-start-submenu { left: 16px; bottom: calc(100% + 2px); max-width: calc(100vw - 20px); } }
+@media (max-height: 550px) { .os-start-submenu { top: 0; bottom: auto; } }
 @media (max-width: 520px) { .os-login-card { align-items: flex-start; padding: 22px; } .os-login-mark { width: 60px; height: 60px; font-size: 42px; } .os-wallpaper-label { bottom: 70px; } }
 .os-app-content { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; margin: 3px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: var(--window-body); color: var(--text-primary); }
 .os-app-content :focus-visible { outline: 2px dotted var(--focus); outline-offset: -2px; }

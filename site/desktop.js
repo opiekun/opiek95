@@ -33,7 +33,16 @@
         <button type="button" class="os-icon" data-app="music"><img src="/assets/icons/media_player-0.png" alt="">Music Player</button>
       </div>
       <div class="os-window-layer" data-window-layer></div>
-      <nav class="os-start-menu" data-start-menu aria-label="Start menu" hidden><div class="os-start-brand">opiekun <b>95</b></div><div class="os-start-items"><div class="os-start-group"><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Programs</button><div class="os-start-submenu" data-start-submenu><button type="button" data-menu-computer><img src="/assets/icons/computer-2.png" alt=""> My Computer</button><a href="/#journal" data-menu-app="journal"><img src="/assets/icons/notepad-1.png" alt=""> Journal</a><a href="/#projects" data-menu-app="projects"><img src="/assets/icons/directory_closed-0.png" alt=""> Projects</a><a href="/#about" data-menu-app="about"><img src="/assets/icons/users-0.png" alt=""> About</a><a href="/assets/Profile.pdf" data-menu-app="resume"><img src="/assets/icons/notepad-1.png" alt=""> Resume</a><button type="button" data-menu-app="music"><img src="/assets/icons/media_player-0.png" alt=""> Music Player</button><a href="mailto:opiekun.matheus@gmail.com"><img src="/assets/icons/envelope_closed-0.png" alt=""> Contact</a></div></div><div class="os-start-group" data-documents-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Documents</button><div class="os-start-submenu" data-start-submenu><a href="/#journal"><img src="/assets/icons/notepad-1.png" alt=""> Journal</a><a href="/#projects"><img src="/assets/icons/directory_closed-0.png" alt=""> Projects</a><a href="/assets/Profile.pdf" data-app="resume"><img src="/assets/icons/notepad-1.png" alt=""> Resume</a></div></div><div class="os-start-group" data-settings-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/display_properties-2.png" alt=""> Settings</button><div class="os-start-submenu" data-start-submenu></div></div><div class="os-start-divider"></div><div data-start-utilities></div><button type="button" data-restart><img src="/assets/icons/shut_down_normal-0.png" alt=""> Restart</button></div></nav>
+      <nav class="os-start-menu" data-start-menu aria-label="Start menu" hidden><div class="os-start-brand">opiekun <b>95</b></div><div class="os-start-items">
+        <div class="os-start-group" data-programs-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Programs</button><div class="os-start-submenu" data-start-submenu>
+          <button type="button" data-menu-computer><img src="/assets/icons/computer-2.png" alt=""> Windows Explorer</button>
+          <div class="os-start-group" data-programs-accessories><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Accessories</button><div class="os-start-submenu" data-start-submenu></div></div>
+          <div class="os-start-group" data-programs-portfolio><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Portfolio</button><div class="os-start-submenu" data-start-submenu><a href="/#journal" data-menu-app="journal"><img src="/assets/icons/notepad-1.png" alt=""> Journal</a><a href="/#projects" data-menu-app="projects"><img src="/assets/icons/directory_closed-0.png" alt=""> Projects</a><a href="/#about" data-menu-app="about"><img src="/assets/icons/users-0.png" alt=""> About</a><a href="/assets/Profile.pdf" data-menu-app="resume"><img src="/assets/icons/notepad-1.png" alt=""> Resume</a><button type="button" data-menu-app="music"><img src="/assets/icons/media_player-0.png" alt=""> Music Player</button><a href="mailto:opiekun.matheus@gmail.com"><img src="/assets/icons/envelope_closed-0.png" alt=""> Contact</a></div></div>
+        </div></div>
+        <div class="os-start-group" data-documents-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Documents</button><div class="os-start-submenu" data-start-submenu><a href="/#journal"><img src="/assets/icons/notepad-1.png" alt=""> Journal</a><a href="/#projects"><img src="/assets/icons/directory_closed-0.png" alt=""> Projects</a><a href="/assets/Profile.pdf" data-app="resume"><img src="/assets/icons/notepad-1.png" alt=""> Resume</a></div></div>
+        <div class="os-start-group" data-settings-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/display_properties-2.png" alt=""> Settings</button><div class="os-start-submenu" data-start-submenu></div></div>
+        <div class="os-start-divider"></div><div data-start-utilities></div><button type="button" data-restart><img src="/assets/icons/shut_down_normal-0.png" alt=""> Restart</button>
+      </div></nav>
       <div class="os-taskbar" data-taskbar><button type="button" class="os-start" data-start aria-expanded="false" aria-controls="os-start-menu"><img src="/assets/icons/windows-0.png" alt=""> Start</button><div class="os-task-windows" data-task-windows aria-label="Open windows"></div><button type="button" class="os-clock" data-clock aria-label="Date and time"></button></div>
     </section>
     <section class="os-startup-sound-prompt" data-startup-sound-prompt role="dialog" aria-modal="true" aria-label="Welcome to opiekun 95" hidden><div class="os-startup-sound-card"><div class="os-startup-sound-title">Welcome to opiekun 95</div><div class="os-startup-sound-body"><p>Click Enter desktop to play the startup sound.</p><p role="status" aria-live="polite"></p><div><button type="button" class="os-button" data-startup-sound-play>Enter desktop</button><button type="button" class="os-button" data-startup-sound-skip>Continue silently</button></div></div></div></section>`;
@@ -111,12 +120,25 @@
   function setMenu(open) { menu.hidden = !open; start.setAttribute('aria-expanded', String(open)); if (!open) menu.querySelectorAll('[data-submenu-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false')); }
   start.addEventListener('click', () => setMenu(menu.hidden));
   start.addEventListener('keydown', event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); setMenu(true); const items = menu.querySelectorAll('.os-start-items > .os-start-group > button, .os-start-items > [data-start-utilities] > button, .os-start-items > button'); items[event.key === 'ArrowDown' ? 0 : items.length - 1]?.focus(); } });
-  menu.addEventListener('click', event => { const trigger = event.target.closest('[data-submenu-trigger]'); if (trigger) { const wasOpen = trigger.getAttribute('aria-expanded') === 'true'; menu.querySelectorAll('[data-submenu-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false')); trigger.setAttribute('aria-expanded', String(!wasOpen)); } });
+  menu.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-submenu-trigger]');
+    if (!trigger) return;
+    const wasOpen = trigger.getAttribute('aria-expanded') === 'true';
+    menu.querySelectorAll('[data-submenu-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false'));
+    if (wasOpen) return;
+    trigger.setAttribute('aria-expanded', 'true');
+    for (let group = trigger.parentElement.parentElement.closest('.os-start-group'); group; group = group.parentElement.closest('.os-start-group')) {
+      group.querySelector(':scope > [data-submenu-trigger]').setAttribute('aria-expanded', 'true');
+    }
+  });
   menu.addEventListener('keydown', event => {
     const target = event.target.closest('button, a'); if (!target) return;
     const group = target.closest('.os-start-group');
-    if (event.key === 'ArrowRight' && target.matches('[data-submenu-trigger]')) { event.preventDefault(); target.setAttribute('aria-expanded', 'true'); group.querySelector('[data-start-submenu] button, [data-start-submenu] a')?.focus(); }
-    else if (event.key === 'ArrowLeft' && group && !target.matches('[data-submenu-trigger]')) { event.preventDefault(); group.querySelector('[data-submenu-trigger]').focus(); group.querySelector('[data-submenu-trigger]').setAttribute('aria-expanded', 'false'); }
+    if (event.key === 'ArrowRight' && target.matches('[data-submenu-trigger]')) { event.preventDefault(); target.setAttribute('aria-expanded', 'true'); group.querySelector(':scope > [data-start-submenu] > button, :scope > [data-start-submenu] > a, :scope > [data-start-submenu] > .os-start-group > button')?.focus(); }
+    else if (event.key === 'ArrowLeft' && group) {
+      const parent = target.matches('[data-submenu-trigger]') ? group.parentElement.closest('.os-start-group') : group;
+      if (parent) { event.preventDefault(); parent.querySelector(':scope > [data-submenu-trigger]').focus(); group.querySelector(':scope > [data-submenu-trigger]').setAttribute('aria-expanded', 'false'); }
+    }
     else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); const container = target.closest('[data-start-submenu]') || menu.querySelector('.os-start-items'); const options = [...container.querySelectorAll(':scope > button, :scope > a, :scope > .os-start-group > button, :scope > [data-start-utilities] > button')]; const index = options.indexOf(target); options[(index + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length]?.focus(); }
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !menu.hidden) { setMenu(false); start.focus(); } });
@@ -240,12 +262,12 @@
     setMenu(false);
     const content = document.createElement('div');
     content.className = 'os-explorer';
-    content.innerHTML = '<div class="os-toolbar"><button type="button" data-back>← Back</button><button type="button" data-up>↑ Up</button><button type="button" data-view-icons aria-pressed="true">Icons</button><button type="button" data-view-details aria-pressed="false">Details</button><button type="button" data-file-properties disabled>Properties</button></div><div class="os-toolbar os-address"><span>Address</span><strong data-address></strong></div><div class="os-files" data-files></div><div class="os-status" data-status></div>';
+    content.innerHTML = '<div class="os-explorer-menubar" data-explorer-menubar><details data-explorer-menu="file"><summary>File</summary><div><button type="button" data-explorer-menu-properties disabled>Properties</button><button type="button" data-explorer-menu-close>Close</button></div></details><details><summary>View</summary><div><button type="button" data-explorer-menu-view="icons">Large Icons</button><button type="button" data-explorer-menu-view="details">Details</button></div></details><details><summary>Help</summary><div><button type="button" data-explorer-menu-help>About My Computer</button></div></details></div><div class="os-toolbar"><button type="button" data-back>← Back</button><button type="button" data-up>↑ Up</button><button type="button" data-view-icons aria-pressed="true">Icons</button><button type="button" data-view-details aria-pressed="false">Details</button><button type="button" data-file-properties disabled>Properties</button></div><div class="os-toolbar os-address"><span>Address</span><strong data-address></strong></div><div class="os-files" data-files></div><div class="os-status" data-status></div>';
     const app = windows.open({ title: 'My Computer', icon: 'computer-2', content });
     let current = 'computer';
     let selected = null;
     const files = content.querySelector('[data-files]');
-    function select(entry, item) { selected = entry; files.querySelectorAll('.os-file').forEach(file => file.classList.toggle('is-selected', file === item)); content.querySelector('[data-file-properties]').disabled = !entry; content.querySelector('[data-status]').textContent = entry ? `${entry.name} · ${entry.folder ? 'File folder' : entry.href ? 'Document' : 'Program'}` : `${folders[current].entries.length} objects`; }
+    function select(entry, item) { selected = entry; files.querySelectorAll('.os-file').forEach(file => file.classList.toggle('is-selected', file === item)); content.querySelector('[data-file-properties]').disabled = !entry; content.querySelector('[data-explorer-menu-properties]').disabled = !entry; content.querySelector('[data-status]').textContent = entry ? `${entry.name} · ${entry.folder ? 'File folder' : entry.href ? 'Document' : 'Program'}` : `${folders[current].entries.length} objects`; }
     function properties() {
       if (!selected) return;
       const detail = document.createElement('div'); detail.className = 'os-utility';
@@ -260,7 +282,7 @@
       content.querySelector('[data-address]').textContent = data.path;
       content.querySelector('[data-back]').disabled = folder === 'computer';
       content.querySelector('[data-up]').disabled = folder === 'computer';
-      selected = null; content.querySelector('[data-file-properties]').disabled = true;
+      selected = null; content.querySelector('[data-file-properties]').disabled = true; content.querySelector('[data-explorer-menu-properties]').disabled = true;
       content.querySelector('[data-status]').textContent = `${data.entries.length} objects`;
       files.replaceChildren();
       data.entries.forEach(entry => {
@@ -281,6 +303,20 @@
     content.querySelector('[data-file-properties]').addEventListener('click', properties);
     content.querySelector('[data-view-icons]').addEventListener('click', () => { files.classList.remove('is-details'); content.querySelector('[data-view-icons]').setAttribute('aria-pressed', 'true'); content.querySelector('[data-view-details]').setAttribute('aria-pressed', 'false'); });
     content.querySelector('[data-view-details]').addEventListener('click', () => { files.classList.add('is-details'); content.querySelector('[data-view-icons]').setAttribute('aria-pressed', 'false'); content.querySelector('[data-view-details]').setAttribute('aria-pressed', 'true'); });
+    const menubar = content.querySelector('[data-explorer-menubar]');
+    menubar.addEventListener('click', event => {
+      const action = event.target.closest('button');
+      if (!action) return;
+      if (action.hasAttribute('data-explorer-menu-properties')) properties();
+      else if (action.hasAttribute('data-explorer-menu-close')) app.element.querySelector('[data-window-close]').click();
+      else if (action.dataset.explorerMenuView) content.querySelector(action.dataset.explorerMenuView === 'details' ? '[data-view-details]' : '[data-view-icons]').click();
+      else if (action.hasAttribute('data-explorer-menu-help')) {
+        const help = document.createElement('p');
+        help.textContent = 'Browse the portfolio folder, open its items, or change the file view.';
+        windows.open({ title: 'About My Computer', content: help, icon: 'computer-2' });
+      }
+      menubar.querySelectorAll('details').forEach(menu => { menu.open = false; });
+    });
     render('computer');
   }
   const computerShortcut = shell.querySelector('[data-open-computer]');

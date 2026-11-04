@@ -400,10 +400,11 @@
   function shutdown() { closeMenu(); context.hidden = true; shell.querySelectorAll('[data-window-close]').forEach(button => button.click()); workspace.hidden = true; power.hidden = false; power.querySelector('button').focus(); }
   const actions = { settings, sounds, dateTime, controlPanel, find, help, documents, run, notepad, dosPrompt, about, shutdown };
   const labels = { notepad: ['Notepad', 'notepad-1'], dosPrompt: ['MS-DOS Prompt', 'executable-0'], documents: ['Documents folder', 'directory_closed-0'], settings: ['Display', 'display_properties-2'], sounds: ['Sounds', 'media_player-0'], dateTime: ['Date/Time', 'display_properties-2'], controlPanel: ['Control Panel', 'display_properties-2'], find: ['Find', 'search_directory-2'], help: ['Help', 'help_book_computer-0'], run: ['Run…', 'executable-0'], about: ['About opiekun 95', 'users-0'], shutdown: ['Shut Down', 'shut_down_normal-0'] };
-  const programs = shell.querySelector('.os-start-group [data-start-submenu]');
+  const accessories = shell.querySelector('[data-programs-accessories] [data-start-submenu]');
+  const documentsMenu = shell.querySelector('[data-documents-group] [data-start-submenu]');
   const settingsMenu = shell.querySelector('[data-settings-group] [data-start-submenu]');
   const bottom = shell.querySelector('[data-start-utilities]');
-  const destinations = { notepad: programs, dosPrompt: programs, documents: programs, settings: settingsMenu, sounds: settingsMenu, dateTime: settingsMenu, controlPanel: settingsMenu, find: bottom, help: bottom, run: bottom, about: bottom, shutdown: bottom };
+  const destinations = { notepad: accessories, dosPrompt: accessories, documents: documentsMenu, settings: settingsMenu, sounds: settingsMenu, dateTime: settingsMenu, controlPanel: settingsMenu, find: bottom, help: bottom, run: bottom, about: bottom, shutdown: bottom };
   Object.entries(labels).forEach(([name, [label, icon]]) => { const button = document.createElement('button'); button.type = 'button'; button.dataset.utilityMenu = name; const image = document.createElement('img'); image.src = `/assets/icons/${icon}.png`; image.alt = ''; button.append(image, document.createTextNode(label)); button.addEventListener('click', () => { closeMenu(); actions[name](); }); destinations[name].append(button); });
   const taskbar = shell.querySelector('[data-taskbar]');
   const clock = shell.querySelector('[data-clock]');
