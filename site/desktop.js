@@ -31,12 +31,14 @@
         <a class="os-icon" href="/#about"><img src="/assets/icons/users-0.png" alt="">About</a>
         <a class="os-icon" href="/assets/Profile.pdf" data-app="resume"><img src="/assets/icons/notepad-1.png" alt="">Resume</a>
         <button type="button" class="os-icon" data-app="music"><img src="/assets/icons/media_player-0.png" alt="">Music Player</button>
+        <button type="button" class="os-icon" data-app="doom"><img src="/assets/icons/executable-0.png" alt="">Doom</button>
       </div>
       <div class="os-window-layer" data-window-layer></div>
       <nav class="os-start-menu" data-start-menu aria-label="Start menu" hidden><div class="os-start-brand">opiekun <b>95</b></div><div class="os-start-items">
         <div class="os-start-group" data-programs-group><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Programs</button><div class="os-start-submenu" data-start-submenu>
           <button type="button" data-menu-computer><img src="/assets/icons/computer-2.png" alt=""> Windows Explorer</button>
           <div class="os-start-group" data-programs-accessories><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Accessories</button><div class="os-start-submenu" data-start-submenu></div></div>
+          <div class="os-start-group" data-programs-games><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Games</button><div class="os-start-submenu" data-start-submenu><button type="button" data-menu-app="doom"><img src="/assets/icons/executable-0.png" alt=""> Doom</button></div></div>
           <button type="button" data-menu-app="internet"><img src="/assets/icons/control-panel/internet.png" alt=""> Internet Explorer</button>
           <div class="os-start-group" data-programs-portfolio><button type="button" data-submenu-trigger aria-expanded="false"><img src="/assets/icons/directory_closed-0.png" alt=""> Portfolio</button><div class="os-start-submenu" data-start-submenu><a href="/#journal" data-menu-app="journal"><img src="/assets/icons/notepad-1.png" alt=""> Journal</a><a href="/#projects" data-menu-app="projects"><img src="/assets/icons/directory_closed-0.png" alt=""> Projects</a><a href="/#about" data-menu-app="about"><img src="/assets/icons/users-0.png" alt=""> About</a><a href="/assets/Profile.pdf" data-menu-app="resume"><img src="/assets/icons/notepad-1.png" alt=""> Resume</a><button type="button" data-menu-app="music"><img src="/assets/icons/media_player-0.png" alt=""> Music Player</button><a href="mailto:opiekun.matheus@gmail.com"><img src="/assets/icons/envelope_closed-0.png" alt=""> Contact</a></div></div>
         </div></div>

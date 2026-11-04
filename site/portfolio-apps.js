@@ -5,6 +5,7 @@
   if (!desktop || !shell) return;
   let serial = 0;
   let musicWindow = null;
+  let doomWindow = null;
 
   // Clone only inert content. Never copy executable elements, event handlers or unsafe URLs.
   function copyPanel(source) {
@@ -135,6 +136,21 @@
     desktop.windows.open({ title: 'Resume', icon: 'notepad-1', content });
   }
 
+  function openDoom() {
+    if (doomWindow?.element.isConnected) { doomWindow.element.hidden = false; doomWindow.focus(); return; }
+    const content = document.createElement('div');
+    content.className = 'os-doom';
+    content.innerHTML = '<div class="os-doom-toolbar"><span>Freedoom: Phase 1</span><button type="button" data-doom-fullscreen>Full screen</button></div><iframe data-doom-frame title="Doom game" src="/assets/doom/index.html" allow="fullscreen" allowfullscreen></iframe>';
+    const frame = content.querySelector('[data-doom-frame]');
+    content.querySelector('[data-doom-fullscreen]').addEventListener('click', () => frame.requestFullscreen?.());
+    const app = desktop.windows.open({ title: 'Doom', icon: 'executable-0', content, onClose: () => { doomWindow = null; } });
+    doomWindow = app;
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(760, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(550, area.height || innerHeight - 32)}px`;
+    app.place();
+  }
+
   function openMusic() {
     if (musicWindow && musicWindow.element.isConnected) { musicWindow.element.hidden = false; musicWindow.focus(); return; }
     const player = document.getElementById('music-player');
@@ -201,6 +217,7 @@
     shell.querySelector('[data-start]').setAttribute('aria-expanded', 'false');
     if (name === 'resume') openResume();
     else if (name === 'music') openMusic();
+    else if (name === 'doom') openDoom();
     else if (['journal', 'projects', 'about', 'internet'].includes(name)) openPanel(name);
   }
   function targetApp(target) {

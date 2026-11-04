@@ -12,11 +12,14 @@ if (!Number.isInteger(port) || port < 0 || port > 65535) {
   process.exit(1);
 }
 
-const publicFiles = new Set(['/index.html', '/styles.css', '/app.js', '/music-player.js', '/desktop.css', '/desktop-media.css', '/desktop.js', '/portfolio-apps.js', '/desktop-utilities.css', '/desktop-utilities.js']);
+const publicFiles = new Set(['/index.html', '/styles.css', '/app.js', '/music-player.js', '/desktop.css', '/desktop-media.css', '/desktop.js', '/portfolio-apps.js', '/desktop-utilities.css', '/desktop-utilities.js', '/assets/doom/index.html', '/assets/doom/doom.js', '/assets/doom/websockets-doom.js']);
 const contentTypes = new Map([
   ['.html', 'text/html; charset=utf-8'],
   ['.css', 'text/css; charset=utf-8'],
   ['.js', 'text/javascript; charset=utf-8'],
+  ['.wasm', 'application/wasm'],
+  ['.wad', 'application/octet-stream'],
+  ['.cfg', 'text/plain; charset=utf-8'],
   ['.pdf', 'application/pdf'],
   ['.wav', 'audio/wav'],
   ['.woff2', 'font/woff2'],
@@ -48,7 +51,7 @@ const server = createServer(async (request, response) => {
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('Cache-Control', 'no-cache');
   response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self' https://radio.plaza.one; connect-src 'self' https://api.plaza.one; frame-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
+  response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self' https://radio.plaza.one; connect-src 'self' https://api.plaza.one; frame-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     respond(request, response, 405, 'Method not allowed', { Allow: 'GET, HEAD' });
@@ -70,6 +73,9 @@ const server = createServer(async (request, response) => {
   if (pathname.includes('\\') || pathname.split('/').some(part => part === '..' || part === '.')) {
     respond(request, response, 403, 'Forbidden');
     return;
+  }
+  if (pathname === '/assets/doom/index.html') {
+    response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'");
   }
   if (pathname === '/preview/article') {
     respond(request, response, 308, 'Redirecting', { Location: '/preview/article/' });

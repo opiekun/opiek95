@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doom</title>
+  <link rel="stylesheet" href="doom.css">
+  <script src="doom.js" defer></script>
+</head>
+<body>
+  <main class="game">
+    <div class="screen">
+      <canvas id="canvas" tabindex="0" aria-label="Doom game screen"></canvas>
+      <div class="launcher" id="launcher">
+        <h1>DOOM</h1>
+        <p>Freedoom: Phase 1</p>
+        <button id="play" type="button">Load game</button>
+        <p id="status" role="status" aria-live="polite">Game files load after you press the button. About 35 MB.</p>
+      </div>
+    </div>
+    <div class="help">Arrows: move · Ctrl: fire · Space: use · Shift: run · Esc: menu</div>
+    <div class="touch-controls" aria-label="Touch game controls">
+      <div><button data-key="ArrowLeft" type="button">◀</button><button data-key="ArrowUp" type="button">▲</button><button data-key="ArrowRight" type="button">▶</button><button data-key="Control" type="button">FIRE</button></div>
+      <div><button data-key="Shift" type="button">RUN</button><button data-key="ArrowDown" type="button">▼</button><button data-key="Space" type="button">USE</button><button data-key="Enter" type="button">ENTER</button><button data-key="Escape" type="button">ESC</button></div>
+    </div>
+  </main>
+</body>
+</html>

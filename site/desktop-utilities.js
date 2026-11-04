@@ -425,7 +425,7 @@
   const iconItems = [...icons.children];
   iconItems.forEach(item => { item.draggable = false; item.querySelectorAll('img').forEach(image => { image.draggable = false; }); });
   icons.addEventListener('dragstart', event => event.preventDefault());
-  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'recycle-bin'];
+  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'doom', 'recycle-bin'];
   let positions;
   try { positions = JSON.parse(get('opiekun-icon-positions') || '{}'); if (!positions || typeof positions !== 'object' || Array.isArray(positions)) positions = {}; } catch { positions = {}; }
   let autoArrange = get('opiekun-icon-auto-arrange') === '1';
