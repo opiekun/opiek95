@@ -153,10 +153,17 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-web-ads[hidden] { display: none; }
 .os-web-ads p { margin: 0 0 4px; font-weight: bold; }
 .os-web-ads p span { color: #555; font-weight: normal; }
-.os-web-ads-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.os-web-ads a, .os-web-ads picture, .os-web-ads img { display: block; width: 88px; height: 31px; }
+.os-web-ads-list { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.os-web-ads a, .os-web-ads picture, .os-web-ads img, .os-web-ads .os-web-badge { display: block; flex: 0 0 88px; width: 88px; height: 31px; }
 .os-web-ads img { image-rendering: pixelated; }
-.os-web-ads a:focus-visible { outline: 2px solid #000080; outline-offset: 2px; }
+.os-web-ads .os-web-badge { flex: none; padding: 2px; border: 2px outset #fff; border-radius: 0; cursor: pointer; font: bold 9px/1 "MS Sans Serif", Tahoma, sans-serif; text-align: center; }
+.os-web-badge strong, .os-web-badge small { display: block; font: inherit; }
+.os-web-badge strong { margin: 2px 0 3px; font-size: 11px; }
+.os-web-badge-projects { background: #000080; color: #fff90a; text-shadow: 1px 1px #000; }
+.os-web-badge-projects small { color: #fff; }
+.os-web-badge-music { background: #2c123c; color: #5affec; text-shadow: 1px 1px #000; }
+.os-web-badge-music small { color: #ff8de0; }
+.os-web-ads a:focus-visible, .os-web-ads button:focus-visible { outline: 2px solid #000080; outline-offset: 2px; }
 .os-projects-window .os-app-content { background: #fff; color: #000; font: 12px/1.35 "MS Sans Serif", Tahoma, sans-serif; }
 .os-projects-window .view-panel { padding: 0; background: #fff; }
 .os-projects-window .section-heading { padding: 6px 8px; border-bottom: 1px solid #808080; background: #c0c0c0; }

@@ -61,7 +61,9 @@
         ['emdash', '100% organic em dashes'],
         ['smile', "Smile! You're training data"]
       ];
-      ads.innerHTML = '<p>From around the web <span>· 88×31 buttons</span></p><div class="os-web-ads-list">' +
+      ads.innerHTML = '<p>Web buttons <span>· 88×31</span></p><div class="os-web-ads-list">' +
+        '<button type="button" class="os-web-badge os-web-badge-projects" data-app="projects" aria-label="Open Projects"><strong>OPIEK95</strong><small>VIEW PROJECTS</small></button>' +
+        '<button type="button" class="os-web-badge os-web-badge-music" data-app="music" aria-label="Open Music Player"><strong>LIVE RADIO</strong><small>★ TUNE IN ★</small></button>' +
         buttons.map(([name, label]) => `<a href="https://a90.com/experiments/88x31/#${name}" target="_blank" rel="noopener noreferrer" title="${label}" aria-label="${label} at A90"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/badges/${name}.png"><img src="/assets/badges/${name}.gif" width="88" height="31" alt="" loading="lazy"></picture></a>`).join('') +
         '</div>';
       frame.append(ads);
