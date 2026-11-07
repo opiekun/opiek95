@@ -74,7 +74,8 @@
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
       if (name === 'internet') {
-        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? 'https://opiekun.github.io/journal/' : panel === 'article-preview' ? 'https://opiekun.github.io/preview/article/' : `https://opiekun.github.io/journal/${panel.slice(8)}/`;
+        const address = 'http://www.geocities.com/SiliconValley/opiekun/';
+        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? address : panel === 'article-preview' ? `${address}preview.html` : `${address}${panel.slice(8)}.html`;
       }
       if (focus) {
         const heading = content.querySelector('h1, h2');
