@@ -72,6 +72,7 @@
         document.getElementById(post.content).content.cloneNode(true)
       );
       panel.append(layout);
+      panel.append(document.querySelector('#journal .geo-journal-ads').cloneNode(true));
     }
     document.querySelector('.empty-journal').hidden = posts.length > 0;
   }

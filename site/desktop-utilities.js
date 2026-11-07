@@ -425,7 +425,7 @@
   const iconItems = [...icons.children];
   iconItems.forEach(item => { item.draggable = false; item.querySelectorAll('img').forEach(image => { image.draggable = false; }); });
   icons.addEventListener('dragstart', event => event.preventDefault());
-  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'doom', 'recycle-bin'];
+  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'doom', 'internet', 'recycle-bin'];
   let positions;
   try { positions = JSON.parse(get('opiekun-icon-positions') || '{}'); if (!positions || typeof positions !== 'object' || Array.isArray(positions)) positions = {}; } catch { positions = {}; }
   let autoArrange = get('opiekun-icon-auto-arrange') === '1';
@@ -543,7 +543,7 @@
   power.querySelector('[data-power-restart]').addEventListener('click', () => { power.hidden = true; shell.querySelector('[data-restart]').click(); });
   function shutdown() { closeMenu(); context.hidden = true; shell.querySelectorAll('[data-window-close]').forEach(button => button.click()); workspace.hidden = true; power.hidden = false; power.querySelector('button').focus(); }
   const actions = { settings, sounds, dateTime, controlPanel, find, help, documents, run, notepad, dosPrompt, about, shutdown };
-  const labels = { notepad: ['Notepad', 'notepad-1'], dosPrompt: ['MS-DOS Prompt', 'executable-0'], documents: ['Documents folder', 'directory_closed-0'], settings: ['Display', 'display_properties-2'], sounds: ['Sounds', 'media_player-0'], dateTime: ['Date/Time', 'display_properties-2'], controlPanel: ['Control Panel', 'display_properties-2'], find: ['Find', 'search_directory-2'], help: ['Help', 'help_book_computer-0'], run: ['Run…', 'executable-0'], about: ['About opiekun 95', 'users-0'], shutdown: ['Shut Down', 'shut_down_normal-0'] };
+  const labels = { notepad: ['Notepad', 'notepad-1'], dosPrompt: ['MS-DOS Prompt', 'executable-0'], documents: ['Documents folder', 'directory_closed-0'], settings: ['Display', 'control-panel/display'], sounds: ['Sounds', 'control-panel/sounds'], dateTime: ['Date/Time', 'control-panel/date-time'], controlPanel: ['Control Panel', 'directory_control_panel-2'], find: ['Find', 'search_directory-2'], help: ['Help', 'help_book_computer-0'], run: ['Run…', 'executable-0'], about: ['About opiekun 95', 'users-0'], shutdown: ['Shut Down', 'shut_down_normal-0'] };
   const accessories = shell.querySelector('[data-programs-accessories] [data-start-submenu]');
   const documentsMenu = shell.querySelector('[data-documents-group] [data-start-submenu]');
   const settingsMenu = shell.querySelector('[data-settings-group] [data-start-submenu]');

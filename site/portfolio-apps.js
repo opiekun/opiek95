@@ -84,7 +84,7 @@
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
       if (name === 'internet') {
-        frame.querySelector('.os-web-ads').hidden = panel !== 'journal';
+        content.querySelector('.geo-journal-ads')?.remove();
         const journalAddress = new URL(shell.querySelector('[data-menu-app="journal"]').getAttribute('href'), location.href);
         frame.querySelector('[data-internet-address]').value = panel === 'journal' ? journalAddress.href : new URL(`journal/${panel.slice(8)}/`, journalAddress.href.split('#')[0]).href;
       }

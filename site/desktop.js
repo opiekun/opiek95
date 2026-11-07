@@ -32,6 +32,7 @@
         <a class="os-icon" href="/assets/Profile.pdf" data-app="resume"><img src="/assets/icons/notepad-1.png" alt="">Resume</a>
         <button type="button" class="os-icon" data-app="music"><img src="/assets/icons/media_player-0.png" alt="">Music Player</button>
         <button type="button" class="os-icon" data-app="doom"><img src="/assets/icons/executable-0.png" alt="">Doom</button>
+        <button type="button" class="os-icon" data-app="internet"><img src="/assets/icons/control-panel/internet.png" alt="">Internet Explorer</button>
       </div>
       <div class="os-window-layer" data-window-layer></div>
       <nav class="os-start-menu" data-start-menu aria-label="Start menu" hidden><div class="os-start-brand">opiekun <b>95</b></div><div class="os-start-items">

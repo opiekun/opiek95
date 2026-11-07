@@ -121,8 +121,9 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-start-brand { display: flex; align-items: end; padding: 5px; background: #808080; color: #c0c0c0; font-size: 20px; writing-mode: vertical-rl; transform: rotate(180deg); }
 .os-start-brand b { color: #fff; }
 .os-start-items { display: flex; flex: 1; flex-direction: column; justify-content: center; }
-.os-start-items a, .os-start-items button { display: flex; align-items: center; min-height: 36px; padding: 3px 7px; border: 0; background: transparent; color: #000; text-align: left; text-decoration: none; }
-.os-start-items img { width: 24px; height: 24px; margin-right: 8px; }
+.os-start-items a, .os-start-items button { display: flex; align-items: center; min-height: 40px; padding: 3px 7px; border: 0; background: transparent; color: #000; text-align: left; text-decoration: none; }
+.os-start-items img { width: 32px; height: 32px; margin-right: 8px; }
+.os-shell img[src*="/control-panel/"] { image-rendering: auto; }
 .os-start-items a:hover, .os-start-items button:hover, .os-start-items :focus-visible { background: #000080; color: white; }
 .os-start-items :focus-visible { outline-color: #fff; }
 .os-start-group { position: relative; }
@@ -234,3 +235,52 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
   .os-start-items a, .os-start-items button { min-height: 44px; }
   .os-resize { min-width: 28px; min-height: 28px; }
 }
+
+.geo-journal, .geo-article {
+  background-color: #09083e;
+  background-image: radial-gradient(#fff6a9 1px, transparent 1.5px), radial-gradient(#75d9ff 1px, transparent 1.5px);
+  background-position: 0 0, 21px 19px;
+  background-size: 48px 48px;
+  color: #fffbd0;
+  font: normal 16px/1.5 "Times New Roman", Georgia, serif;
+}
+.geo-journal { padding: 24px 28px 30px; }
+.geo-welcome { margin: 0 0 16px; color: #8ffff6; font: bold 13px/1.4 "Courier New", monospace; text-align: center; text-shadow: 1px 1px #000; }
+.geo-journal .section-heading { justify-content: center; text-align: center; }
+.geo-journal .eyebrow { color: #ffb6e5; font: bold 11px/1.4 "Courier New", monospace; letter-spacing: 1px; }
+.geo-journal h1 { margin: 6px 0 0; color: #ffe95e; font: bold clamp(30px, 5vw, 48px)/1.1 Georgia, "Times New Roman", serif; letter-spacing: 0; text-shadow: 3px 3px #aa2783, 5px 5px #000; }
+.geo-journal .pink-period { color: #ff75ce; }
+.geo-journal .journal-intro { max-width: none; margin: 18px 0; color: #e5f9ff; font: normal 17px/1.45 "Times New Roman", serif; text-align: center; }
+.geo-ticker { overflow: hidden; margin: 0 0 18px; padding: 4px 0; border: 2px ridge #fff; background: #ffff80; color: #000080; font: bold 12px/1.2 "Courier New", monospace; white-space: nowrap; }
+.geo-ticker span { display: inline-block; padding-left: 100%; animation: geo-scroll 15s linear infinite; }
+@keyframes geo-scroll { to { transform: translateX(-100%); } }
+.geo-journal .journal-entry { margin: 16px 0; padding: 14px 18px; border: 4px double #ff79dc; background: #fffbd0; box-shadow: 5px 5px #000; color: #161355; }
+.geo-journal .journal-entry-meta { color: #8d1765; font: bold 12px/1.4 "Courier New", monospace; }
+.geo-journal .journal-entry h2 { margin: 7px 0 0; color: #0000b0; font: bold 24px/1.2 Georgia, serif; letter-spacing: 0; }
+.geo-journal .journal-entry h2 a { color: #0000b0; text-decoration: underline; }
+.geo-journal .journal-entry h2 a:hover { color: #9d005b; }
+.geo-journal .journal-entry-summary { margin-top: 7px; color: #25204b; font: normal 16px/1.4 "Times New Roman", serif; }
+.geo-journal .reading-preview-link { margin: 24px 0 0; padding-top: 12px; border-top: 3px double #ffde61; }
+.geo-journal .reading-preview-link a, .geo-article .article-navigation a { color: #7cfaff; font: bold 14px/1.4 "Courier New", monospace; }
+.geo-journal .reading-preview-link p { color: #ddd4ff; font: normal 13px/1.4 "Times New Roman", serif; }
+.geo-journal-ads { margin: 22px 0 0; padding: 10px; border: 3px ridge #eac4ff; background: #eae7ff; color: #161355; font: bold 12px/1.25 "Courier New", monospace; text-align: center; }
+.geo-journal-ads p { margin: 0 0 9px; }
+.geo-journal-ads p span { color: #554981; font-weight: normal; }
+.geo-journal-ads > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+.geo-journal-ads a, .geo-journal-ads picture, .geo-journal-ads img { display: block; width: 88px; height: 31px; }
+.geo-journal-ads img { image-rendering: pixelated; }
+.geo-journal-ads a:focus-visible { outline: 2px solid #0000b0; outline-offset: 2px; }
+.os-internet-window .geo-journal-ads { display: none; }
+.geo-article { padding: 22px; }
+.geo-article .article-navigation { margin-bottom: 14px; font-size: 14px; }
+.geo-article .reading-article { padding: 22px; border: 4px double #ff79dc; background: #fffbd0; box-shadow: 5px 5px #000; color: #161355; font: normal 17px/1.6 "Times New Roman", Georgia, serif; }
+.geo-article .article-label, .geo-article .article-meta { color: #8d1765; font: bold 12px/1.4 "Courier New", monospace; }
+.geo-article .article-header h1 { color: #0000b0; font: bold clamp(25px, 4vw, 38px)/1.2 Georgia, serif; letter-spacing: 0; }
+.geo-article .article-lead { font: bold 18px/1.45 "Times New Roman", serif; }
+.geo-article .article-prose { margin-top: 20px; }
+.geo-article .article-prose a { color: #0000b0; }
+@media (max-width: 600px) {
+  .geo-journal, .geo-article { padding: 16px; }
+  .geo-article .reading-article { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .geo-ticker span { padding-left: 0; animation: none; } }
