@@ -149,6 +149,14 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-projects-toolbar button[aria-checked="true"] { border-color: #808080 #fff #fff #808080; background: #dfdfdf; }
 .os-internet-toolbar label { display: flex; flex: 1; align-items: center; gap: 5px; min-width: 0; }
 .os-internet-toolbar input { flex: 1; min-width: 0; height: 21px; padding: 2px 4px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff; color: #000; font: inherit; }
+.os-web-ads { flex: none; margin: 0 3px 3px; padding: 5px 8px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #f5f4ed; color: #000; font: 11px/1.25 "MS Sans Serif", Tahoma, sans-serif; }
+.os-web-ads[hidden] { display: none; }
+.os-web-ads p { margin: 0 0 4px; font-weight: bold; }
+.os-web-ads p span { color: #555; font-weight: normal; }
+.os-web-ads-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.os-web-ads a, .os-web-ads picture, .os-web-ads img { display: block; width: 88px; height: 31px; }
+.os-web-ads img { image-rendering: pixelated; }
+.os-web-ads a:focus-visible { outline: 2px solid #000080; outline-offset: 2px; }
 .os-projects-window .os-app-content { background: #fff; color: #000; font: 12px/1.35 "MS Sans Serif", Tahoma, sans-serif; }
 .os-projects-window .view-panel { padding: 0; background: #fff; }
 .os-projects-window .section-heading { padding: 6px 8px; border-bottom: 1px solid #808080; background: #c0c0c0; }
