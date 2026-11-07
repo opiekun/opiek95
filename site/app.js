@@ -94,6 +94,9 @@
   }
   mountPosts();
   mountArticlePreview();
+  document.querySelectorAll('.geo-journal-ads [data-app="music"]').forEach(button => button.addEventListener('click', () => {
+    document.getElementById('music-player').scrollIntoView({ block: 'end' });
+  }));
 
   const navigation = Array.from(document.querySelectorAll('[data-view]'));
   const panels = Array.from(views.keys(), name => document.getElementById(name));

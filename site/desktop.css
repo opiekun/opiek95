@@ -86,9 +86,9 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-controls button::before { content: ""; position: absolute; display: block; width: 8px; height: 8px; top: 4px; left: 4px; background-position: center; background-repeat: no-repeat; image-rendering: pixelated; }
 .os-controls button:active::before { transform: translate(1px, 1px); }
 .os-controls [data-window-minimize]::before { top: 10px; left: 4px; width: 6px; height: 2px; background: #000; }
-.os-controls [data-window-maximize]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h9v9H0zm1 3v5h7V3z' fill-rule='evenodd'/%3E%3C/svg%3E"); }
-.os-window[data-maximized="true"] .os-controls [data-window-maximize]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath d='M3 0h6v6H7V2H4v1H3zM0 3h7v6H0zm1 2v3h5V5z' fill-rule='evenodd'/%3E%3C/svg%3E"); }
-.os-controls [data-window-close]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h2v1h1v1h1v1h1V2h1V1h1V0h2v2H8v1H7v1H6v1h1v1h1v1h1v2H7V8H6V7H5V6H4v1H3v1H2v1H0V7h1V6h1V5h1V4H2V3H1V2H0z'/%3E%3C/svg%3E"); }
+.os-controls [data-window-maximize]::before { background-image: url("/assets/icons/title-maximize.svg"); }
+.os-window[data-maximized="true"] .os-controls [data-window-maximize]::before { background-image: url("/assets/icons/title-restore.svg"); }
+.os-controls [data-window-close]::before { background-image: url("/assets/icons/title-close.svg"); }
 .os-toolbar { display: flex; align-items: center; gap: 5px; padding: 4px; border-bottom: 1px solid #808080; font-size: 12px; }
 .os-toolbar button { padding: 3px 8px; white-space: nowrap; }
 .os-toolbar strong { flex: 1; overflow: hidden; padding: 3px 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: white; font-weight: normal; white-space: nowrap; text-overflow: ellipsis; }
@@ -150,21 +150,14 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-projects-toolbar button[aria-checked="true"] { border-color: #808080 #fff #fff #808080; background: #dfdfdf; }
 .os-internet-toolbar label { display: flex; flex: 1; align-items: center; gap: 5px; min-width: 0; }
 .os-internet-toolbar input { flex: 1; min-width: 0; height: 21px; padding: 2px 4px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff; color: #000; font: inherit; }
-.os-web-ads { flex: none; margin: 0 3px 3px; padding: 5px 8px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #f5f4ed; color: #000; font: 11px/1.25 "MS Sans Serif", Tahoma, sans-serif; }
-.os-web-ads[hidden] { display: none; }
-.os-web-ads p { margin: 0 0 4px; font-weight: bold; }
-.os-web-ads p span { color: #555; font-weight: normal; }
-.os-web-ads-list { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
-.os-web-ads a, .os-web-ads picture, .os-web-ads img, .os-web-ads .os-web-badge { display: block; flex: 0 0 88px; width: 88px; height: 31px; }
-.os-web-ads img { image-rendering: pixelated; }
-.os-web-ads .os-web-badge { flex: none; padding: 2px; border: 2px outset #fff; border-radius: 0; cursor: pointer; font: bold 9px/1 "MS Sans Serif", Tahoma, sans-serif; text-align: center; }
+.geo-journal-ads .os-web-badge { display: block; flex: none; width: 88px; height: 31px; padding: 2px; border: 2px outset #fff; border-radius: 0; cursor: pointer; font: bold 9px/1 "MS Sans Serif", Tahoma, sans-serif; text-align: center; text-decoration: none; }
 .os-web-badge strong, .os-web-badge small { display: block; font: inherit; }
 .os-web-badge strong { margin: 2px 0 3px; font-size: 11px; }
 .os-web-badge-projects { background: #000080; color: #fff90a; text-shadow: 1px 1px #000; }
 .os-web-badge-projects small { color: #fff; }
 .os-web-badge-music { background: #2c123c; color: #5affec; text-shadow: 1px 1px #000; }
 .os-web-badge-music small { color: #ff8de0; }
-.os-web-ads a:focus-visible, .os-web-ads button:focus-visible { outline: 2px solid #000080; outline-offset: 2px; }
+.geo-journal-ads a:focus-visible, .geo-journal-ads button:focus-visible { outline: 2px solid #000080; outline-offset: 2px; }
 .os-projects-window .os-app-content { background: #fff; color: #000; font: 12px/1.35 "MS Sans Serif", Tahoma, sans-serif; }
 .os-projects-window .view-panel { padding: 0; background: #fff; }
 .os-projects-window .section-heading { padding: 6px 8px; border-bottom: 1px solid #808080; background: #c0c0c0; }
@@ -254,7 +247,15 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .geo-ticker { overflow: hidden; margin: 0 0 18px; padding: 4px 0; border: 2px ridge #fff; background: #ffff80; color: #000080; font: bold 12px/1.2 "Courier New", monospace; white-space: nowrap; }
 .geo-ticker span { display: inline-block; padding-left: 100%; animation: geo-scroll 15s linear infinite; }
 @keyframes geo-scroll { to { transform: translateX(-100%); } }
-.geo-journal .journal-entry { margin: 16px 0; padding: 14px 18px; border: 4px double #ff79dc; background: #fffbd0; box-shadow: 5px 5px #000; color: #161355; }
+.geo-page-layout { display: grid; grid-template-columns: minmax(0, 1fr) 124px; gap: 14px; align-items: start; }
+.geo-page-main { min-width: 0; }
+.geo-section-label { margin: 0; padding: 5px 8px; border: 2px solid #ff79dc; background: #921a75; color: #fff; font: bold 13px/1.2 "Courier New", monospace; text-align: center; }
+.geo-sidebar { display: grid; gap: 10px; min-width: 0; }
+.geo-side-panel { padding: 7px; border: 3px ridge #ff79dc; background: #fffbd0; color: #161355; font: 12px/1.3 "Times New Roman", serif; text-align: center; }
+.geo-side-panel h2 { margin: -7px -7px 7px; padding: 3px; background: #a62b8c; color: #fff; font: bold 17px/1.1 Georgia, serif; }
+.geo-side-panel nav { display: grid; gap: 3px; text-align: left; }
+.geo-side-panel a:not(.os-web-badge) { color: #0000b0; text-decoration: underline; }
+.geo-journal .journal-entry { margin: 10px 0; padding: 14px 18px; border: 4px double #ff79dc; background: #fffbd0; box-shadow: 5px 5px #000; color: #161355; }
 .geo-journal .journal-entry-meta { color: #8d1765; font: bold 12px/1.4 "Courier New", monospace; }
 .geo-journal .journal-entry h2 { margin: 7px 0 0; color: #0000b0; font: bold 24px/1.2 Georgia, serif; letter-spacing: 0; }
 .geo-journal .journal-entry h2 a { color: #0000b0; text-decoration: underline; }
@@ -263,14 +264,12 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .geo-journal .reading-preview-link { margin: 24px 0 0; padding-top: 12px; border-top: 3px double #ffde61; }
 .geo-journal .reading-preview-link a, .geo-article .article-navigation a { color: #7cfaff; font: bold 14px/1.4 "Courier New", monospace; }
 .geo-journal .reading-preview-link p { color: #ddd4ff; font: normal 13px/1.4 "Times New Roman", serif; }
-.geo-journal-ads { margin: 22px 0 0; padding: 10px; border: 3px ridge #eac4ff; background: #eae7ff; color: #161355; font: bold 12px/1.25 "Courier New", monospace; text-align: center; }
-.geo-journal-ads p { margin: 0 0 9px; }
-.geo-journal-ads p span { color: #554981; font-weight: normal; }
-.geo-journal-ads > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+.geo-journal-ads > div { display: grid; justify-content: center; gap: 6px; }
 .geo-journal-ads a, .geo-journal-ads picture, .geo-journal-ads img { display: block; width: 88px; height: 31px; }
 .geo-journal-ads img { image-rendering: pixelated; }
-.geo-journal-ads a:focus-visible { outline: 2px solid #0000b0; outline-offset: 2px; }
-.os-internet-window .geo-journal-ads { display: none; }
+.geo-journal-ads p { margin: 8px 0 0; }
+.geo-article > .geo-journal-ads { width: max-content; max-width: 100%; margin-top: 14px; }
+.geo-article > .geo-journal-ads > div { display: flex; flex-wrap: wrap; }
 .geo-article { padding: 22px; }
 .geo-article .article-navigation { margin-bottom: 14px; font-size: 14px; }
 .geo-article .reading-article { padding: 22px; border: 4px double #ff79dc; background: #fffbd0; box-shadow: 5px 5px #000; color: #161355; font: normal 17px/1.6 "Times New Roman", Georgia, serif; }
@@ -281,6 +280,8 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .geo-article .article-prose a { color: #0000b0; }
 @media (max-width: 600px) {
   .geo-journal, .geo-article { padding: 16px; }
+  .geo-page-layout { grid-template-columns: minmax(0, 1fr) 112px; gap: 10px; }
   .geo-article .reading-article { padding: 16px; }
 }
+@media (max-width: 430px) { .geo-page-layout { display: flex; flex-direction: column; } .geo-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .geo-ticker span { padding-left: 0; animation: none; } }

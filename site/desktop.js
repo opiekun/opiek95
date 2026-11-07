@@ -74,7 +74,9 @@
   let count = 0;
   const storage = { get() { try { return localStorage.getItem('opiekun-desktop-visited'); } catch { return null; } }, set(value) { try { if (value) localStorage.setItem('opiekun-desktop-visited', '1'); else localStorage.removeItem('opiekun-desktop-visited'); } catch {} } };
   let showPost = (() => { try { return localStorage.getItem('opiekun-bios-show-post') === '1'; } catch { return false; } })();
-  function offerStartupSound() { if (desktop.hidden) return; soundPrompt.hidden = false; soundPrompt.querySelector('[data-startup-sound-play]').focus(); }
+  function welcomeSeen() { try { return localStorage.getItem('opiekun-startup-welcome-seen') === '1'; } catch { return false; } }
+  function rememberWelcome() { try { localStorage.setItem('opiekun-startup-welcome-seen', '1'); } catch {} }
+  function offerStartupSound() { if (desktop.hidden || welcomeSeen()) return; soundPrompt.hidden = false; soundPrompt.querySelector('[data-startup-sound-play]').focus(); }
   function signalDesktopReady() { desktop.dataset.ready = 'true'; shell.dispatchEvent(new Event('desktop:ready')); }
   function startupSoundError(error, interactive) {
     if (error?.name === 'NotAllowedError' && !interactive) offerStartupSound();
@@ -86,7 +88,7 @@
     try {
       loginSound.currentTime = 0;
       const result = loginSound.play();
-      return result?.then(() => { if (interactive) { soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); } }).catch(error => startupSoundError(error, interactive));
+      return result?.then(() => { rememberWelcome(); if (interactive) { soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); } }).catch(error => startupSoundError(error, interactive));
     } catch (error) {
       startupSoundError(error, interactive);
     }
@@ -95,7 +97,7 @@
   function showLogin() { clearTimeout(timer); postActive = false; soundPrompt.hidden = true; boot.hidden = true; desktop.hidden = true; login.hidden = false; shell.querySelector('.os-auto-login').textContent = 'Signing in automatically in a moment. Edit a field to pause.'; shell.querySelector('[data-login-enter]').focus(); timer = setTimeout(enterDesktop, 6000); }
   function showDesktop() { clearTimeout(timer); postActive = false; boot.hidden = true; login.hidden = true; desktop.hidden = false; desktop.dataset.ready = 'false'; Promise.resolve(playStartupSound()).then(() => { if (soundPrompt.hidden) signalDesktopReady(); }); }
   soundPrompt.querySelector('[data-startup-sound-play]').addEventListener('click', () => playStartupSound(true));
-  soundPrompt.querySelector('[data-startup-sound-skip]').addEventListener('click', () => { soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); });
+  soundPrompt.querySelector('[data-startup-sound-skip]').addEventListener('click', () => { rememberWelcome(); soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); });
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function startBoot() {
     clearTimeout(timer); soundPrompt.hidden = true; desktop.hidden = true; login.hidden = true; boot.hidden = false;

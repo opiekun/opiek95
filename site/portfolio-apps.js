@@ -51,27 +51,16 @@
       frame.innerHTML = '<div class="os-internet-toolbar"><button type="button" data-internet-home>Home</button><button type="button" data-internet-refresh>Refresh</button><label>Address: <input data-internet-address readonly aria-label="Address"></label></div>';
     }
     frame.append(content);
-    if (name === 'internet') {
-      const ads = document.createElement('aside');
-      ads.className = 'os-web-ads';
-      ads.setAttribute('aria-label', 'Web buttons');
-      const buttons = [
-        ['pelican', 'A pelican riding a bicycle'],
-        ['arcade', 'Continue? Insert $200'],
-        ['emdash', '100% organic em dashes'],
-        ['smile', "Smile! You're training data"]
-      ];
-      ads.innerHTML = '<p>Web buttons <span>· 88×31</span></p><div class="os-web-ads-list">' +
-        '<button type="button" class="os-web-badge os-web-badge-projects" data-app="projects" aria-label="Open Projects"><strong>OPIEK95</strong><small>VIEW PROJECTS</small></button>' +
-        '<button type="button" class="os-web-badge os-web-badge-music" data-app="music" aria-label="Open Music Player"><strong>LIVE RADIO</strong><small>★ TUNE IN ★</small></button>' +
-        buttons.map(([name, label]) => `<a href="https://a90.com/experiments/88x31/#${name}" target="_blank" rel="noopener noreferrer" title="${label}" aria-label="${label} at A90"><picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/badges/${name}.png"><img src="/assets/badges/${name}.gif" width="88" height="31" alt="" loading="lazy"></picture></a>`).join('') +
-        '</div>';
-      frame.append(ads);
-    }
     const title = { journal: 'Journal', projects: 'Projects', about: 'About', internet: 'Internet Explorer' }[name];
     const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : name === 'internet' ? 'control-panel/internet' : 'notepad-1', content: frame, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
     if (name === 'projects') app.element.classList.add('os-projects-window');
-    if (name === 'internet') app.element.classList.add('os-internet-window');
+    if (name === 'internet') {
+      app.element.classList.add('os-internet-window');
+      const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+      app.element.style.width = `${Math.min(780, Math.max(0, (area.width || innerWidth) - 24))}px`;
+      app.element.style.height = `${Math.min(590, Math.max(0, (area.height || innerHeight - 32) - 24))}px`;
+      app.place();
+    }
     if (name === 'about') {
       app.element.classList.add('os-about-window');
       const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
@@ -84,7 +73,6 @@
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
       if (name === 'internet') {
-        content.querySelector('.geo-journal-ads')?.remove();
         const journalAddress = new URL(shell.querySelector('[data-menu-app="journal"]').getAttribute('href'), location.href);
         frame.querySelector('[data-internet-address]').value = panel === 'journal' ? journalAddress.href : new URL(`journal/${panel.slice(8)}/`, journalAddress.href.split('#')[0]).href;
       }

@@ -76,8 +76,8 @@ h2, h3 { font-family: var(--font-body); font-weight: 700; line-height: 1.4; }
 .window-controls .control-close { margin-left: 1px; }
 .window-controls > span::before { content: ""; position: absolute; display: block; width: 8px; height: 8px; top: 4px; left: 4px; background-position: center; background-repeat: no-repeat; image-rendering: pixelated; }
 .window-controls .control-min::before { top: 10px; left: 4px; width: 6px; height: 2px; background: #000; }
-.window-controls .control-max::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h9v9H0zm1 3v5h7V3z' fill-rule='evenodd'/%3E%3C/svg%3E"); }
-.window-controls .control-close::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h2v1h1v1h1v1h1V2h1V1h1V0h2v2H8v1H7v1H6v1h1v1h1v1h1v2H7V8H6V7H5V6H4v1H3v1H2v1H0V7h1V6h1V5h1V4H2V3H1V2H0z'/%3E%3C/svg%3E"); }
+.window-controls .control-max::before { background-image: url("/assets/icons/title-maximize.svg"); }
+.window-controls .control-close::before { background-image: url("/assets/icons/title-close.svg"); }
 .eyebrow { font: 600 11px/1.6 var(--font-body); letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
 h1 { font-size: clamp(32px, 3vw, 40px); margin-top: 8px; letter-spacing: -0.8px; overflow-wrap: anywhere; text-wrap: balance; }
 .pink-period { color: var(--sparkle); }
