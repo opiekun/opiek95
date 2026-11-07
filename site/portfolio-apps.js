@@ -52,13 +52,14 @@
     }
     frame.append(content);
     const title = { journal: 'Journal', projects: 'Projects', about: 'About', internet: 'Internet Explorer' }[name];
-    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : name === 'internet' ? 'control-panel/internet' : 'notepad-1', content: frame, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
+    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : name === 'internet' ? 'control-panel/internet' : 'notepad-1', content: frame, initialPosition: name === 'about' ? 'top-right' : name === 'internet' ? 'journal-desktop' : undefined, onClose: ['about', 'internet'].includes(name) ? () => { try { localStorage.setItem(name === 'about' ? 'opiekun-about-dismissed' : 'opiekun-internet-dismissed', '1'); } catch {} } : undefined });
     if (name === 'projects') app.element.classList.add('os-projects-window');
     if (name === 'internet') {
       app.element.classList.add('os-internet-window');
       const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
-      app.element.style.width = `${Math.min(780, Math.max(0, (area.width || innerWidth) - 24))}px`;
-      app.element.style.height = `${Math.min(590, Math.max(0, (area.height || innerHeight - 32) - 24))}px`;
+      const width = area.width || innerWidth, height = area.height || innerHeight - 32;
+      app.element.style.width = `${Math.max(0, Math.min(1060, Math.max(560, width * .44), width - 24))}px`;
+      app.element.style.height = `${Math.max(0, Math.min(910, height * .77, height - 24))}px`;
       app.place();
     }
     if (name === 'about') {
@@ -73,8 +74,7 @@
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
       if (name === 'internet') {
-        const journalAddress = new URL(shell.querySelector('[data-menu-app="journal"]').getAttribute('href'), location.href);
-        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? journalAddress.href : new URL(`journal/${panel.slice(8)}/`, journalAddress.href.split('#')[0]).href;
+        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? 'https://opiekun.github.io/journal/' : panel === 'article-preview' ? 'https://opiekun.github.io/preview/article/' : `https://opiekun.github.io/journal/${panel.slice(8)}/`;
       }
       if (focus) {
         const heading = content.querySelector('h1, h2');
@@ -250,12 +250,14 @@
     if (!target || !target.item.closest('.os-icons') || lastPointer === 'touch') return;
     event.preventDefault(); event.stopImmediatePropagation(); launch(target.name);
   }, true);
-  function openWelcomeAbout() {
+  function openWelcomeDesktop() {
     if (shell.hidden || shell.querySelector('[data-desktop]').hidden || shell.querySelector('[data-desktop]').dataset.ready !== 'true') return;
-    try { if (localStorage.getItem('opiekun-about-dismissed') === '1') return; } catch {}
-    if (shell.querySelector('[data-window][aria-label="About"]')) return;
-    openPanel('about');
+    for (const [name, title, key] of [['about', 'About', 'opiekun-about-dismissed'], ['internet', 'Internet Explorer', 'opiekun-internet-dismissed']]) {
+      let dismissed = false;
+      try { dismissed = localStorage.getItem(key) === '1'; } catch {}
+      if (!dismissed && !shell.querySelector(`[data-window][aria-label="${title}"]`)) openPanel(name);
+    }
   }
-  shell.addEventListener('desktop:ready', openWelcomeAbout);
-  openWelcomeAbout();
+  shell.addEventListener('desktop:ready', openWelcomeDesktop);
+  openWelcomeDesktop();
 })();

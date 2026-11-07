@@ -201,8 +201,8 @@
       const width = Math.min(win.getBoundingClientRect().width || parseFloat(win.style.width) || 560, area.width);
       const height = Math.min(win.getBoundingClientRect().height || parseFloat(win.style.height) || 360, area.height);
       const saved = rememberedPositions.get(windowTitle);
-      const x = Number.isFinite(saved?.x) ? saved.x : initialPosition === 'top-right' ? area.width - width - 18 : Math.round((area.width - width) / 2);
-      const y = Number.isFinite(saved?.y) ? saved.y : initialPosition === 'top-right' ? 24 : Math.round((area.height - height) / 2);
+      const x = Number.isFinite(saved?.x) ? saved.x : initialPosition === 'top-right' ? area.width - width - 18 : initialPosition === 'journal-desktop' ? area.width >= 1500 ? Math.min(area.width * .26, area.width - width - 632) : Math.round((area.width - width) / 2) : Math.round((area.width - width) / 2);
+      const y = Number.isFinite(saved?.y) ? saved.y : initialPosition === 'top-right' ? 24 : initialPosition === 'journal-desktop' ? Math.round(area.height * .08) : Math.round((area.height - height) / 2);
       win.style.left = `${Math.max(0, Math.min(x, area.width - width))}px`;
       win.style.top = `${Math.max(0, Math.min(y, area.height - height))}px`;
     }
