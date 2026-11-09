@@ -10,9 +10,6 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-progress span { display: block; width: 100%; height: 100%; background: repeating-linear-gradient(90deg, #a8cccf 0 16px, transparent 16px 21px); animation: os-loading 1s steps(5) infinite; transform-origin: left; }
 @keyframes os-loading { from { transform: scaleX(.1); } to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) { .os-progress span { animation: none; } }
-.os-login-field { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 8px; margin: 8px 0; font-size: 12px; }
-.os-login-field input { min-width: 0; padding: 4px; border: 2px solid; border-color: #777 #fff #fff #777; background: white; color: #111; }
-.os-auto-login { font-size: 11px; }
 .os-window-content, .os-explorer { display: flex; flex: 1; flex-direction: column; min-width: 0; min-height: 0; }
 .os-shell a { color: inherit; }
 .os-shell :focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
@@ -38,22 +35,17 @@ body.os-active > :not(.os-shell) { visibility: hidden; }
 .os-bios-actions button:focus-visible { outline: 2px solid #ffff55; }
 .os-bios-setup > p { font-size: 14px; }
 @media (max-width: 650px) { .os-bios-brand { top: auto; right: 18px; bottom: 65px; } .os-post { padding: 12px; font-size: 14px; } .os-boot-footer { bottom: 48px; left: 12px; font-size: 13px; } .os-skip { bottom: 10px; left: 12px; right: auto; } .os-bios-setup { padding: 12px; font-size: 14px; } }
-.os-login { display: grid; place-items: center; padding: 20px; background: #087c80; }
-.os-login-card { display: flex; gap: 24px; align-items: center; max-width: 540px; padding: 34px; border: 3px solid; border-color: white #42464a #42464a white; background: #c4c9ca; box-shadow: 8px 8px #07565a; }
+.os-login { display: grid; place-items: center; overflow: auto; padding: 24px; background: #008080; }
+.os-login-card { display: flex; gap: 28px; align-items: center; width: min(560px, 100%); padding: 32px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080, 5px 5px #005858; }
+.os-welcome-copy { flex: 1; min-width: 0; font-size: 12px; line-height: 1.5; }
+.os-welcome-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.os-welcome-actions button { min-height: 28px; }
 .os-login-mark { display: grid; place-items: center; flex: none; width: 100px; height: 100px; padding: 4px; background: #213d49; }
 .os-login-mark .raccoon-art { display: block; width: 100%; height: 100%; }
 .os-kicker { margin: 0; font-size: 10px; font-weight: bold; letter-spacing: .18em; }
 .os-login h1 { margin: 0; font: bold 32px/1.1 Tahoma, sans-serif; letter-spacing: -.06em; }
 .os-login h1 span { color: #893c64; }
 .os-login p { margin: 10px 0; }
-.os-startup-sound-prompt { position: absolute; inset: 0; z-index: 20001; display: grid; place-items: center; padding: 16px; background: rgb(0 0 0 / 42%); }
-.os-startup-sound-card { width: min(380px, 100%); padding: 3px; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; }
-.os-startup-sound-title { padding: 3px 5px; background: #000080; color: #fff; font-size: 12px; font-weight: bold; }
-.os-startup-sound-body { padding: 18px; font-size: 12px; }
-.os-startup-sound-body p { margin: 0 0 14px; }
-.os-startup-sound-body [role="status"]:empty { display: none; }
-.os-startup-sound-body > div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.os-startup-sound-body button { min-width: 104px; padding: 4px 8px; }
 .os-remember { display: block; margin: 20px 0; font-size: 12px; }
 .os-remember input { vertical-align: middle; }
 .os-button, .os-start, .os-controls button, .os-toolbar button { border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; color: #000; padding: 5px 12px; }

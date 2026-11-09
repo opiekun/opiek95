@@ -16,11 +16,9 @@
       <button type="button" class="os-skip" data-boot-skip>Skip startup</button>
     </section>
     <section class="os-login" data-login hidden aria-labelledby="os-login-title">
-      <form class="os-login-card" data-login-form><div class="os-login-mark" aria-hidden="true"></div><div><p class="os-kicker">WELCOME TO</p><h1 id="os-login-title">opiekun<span>95</span></h1><p>Simulated sign-in. No account or password required.</p>
-      <label class="os-login-field">User name <input name="username" value="Guest" autocomplete="off"></label>
-      <label class="os-login-field">Password <input name="password" type="password" autocomplete="off"></label>
-      <label class="os-remember"><input type="checkbox" data-remember checked> Remember this device and skip startup next time</label>
-      <button type="submit" class="os-button" data-login-enter>Enter desktop →</button><p class="os-auto-login">Signing in automatically in a moment. Edit a field to pause.</p></div></form>
+      <form class="os-login-card" data-login-form><div class="os-login-mark" aria-hidden="true"></div><div class="os-welcome-copy"><p class="os-kicker">WELCOME TO</p><h1 id="os-login-title">opiekun<span>95</span></h1><p>Make yourself at home.</p><p>Explore my journal, projects, resume, and a few things just for fun.</p>
+      <label class="os-remember"><input type="checkbox" data-remember checked> Skip the boot sequence next time</label>
+      <div class="os-welcome-actions"><button type="submit" class="os-button" data-login-enter>Enter desktop</button><button type="button" class="os-button" data-login-silent>Continue silently</button></div></div></form>
     </section>
     <section class="os-desktop" data-desktop hidden aria-label="Desktop">
       <div class="os-wallpaper-label" aria-hidden="true">opiekun<span>95</span><small>personal computer</small></div>
@@ -48,8 +46,7 @@
         <div class="os-start-divider"></div><div data-start-utilities></div><button type="button" data-restart><img src="/assets/icons/shut_down_normal-0.png" alt=""> Restart</button>
       </div></nav>
       <div class="os-taskbar" data-taskbar><button type="button" class="os-start" data-start aria-expanded="false" aria-controls="os-start-menu"><img src="/assets/icons/windows-0.png" alt=""> Start</button><div class="os-task-windows" data-task-windows aria-label="Open windows"></div><button type="button" class="os-clock" data-clock aria-label="Date and time"></button></div>
-    </section>
-    <section class="os-startup-sound-prompt" data-startup-sound-prompt role="dialog" aria-modal="true" aria-label="Welcome to opiekun 95" hidden><div class="os-startup-sound-card"><div class="os-startup-sound-title">Welcome to opiekun 95</div><div class="os-startup-sound-body"><p>Click Enter desktop to play the startup sound.</p><p role="status" aria-live="polite"></p><div><button type="button" class="os-button" data-startup-sound-play>Enter desktop</button><button type="button" class="os-button" data-startup-sound-skip>Continue silently</button></div></div></div></section>`;
+    </section>`;
   const raccoon = document.querySelector('.hero-art .raccoon-art');
   if (raccoon) shell.querySelector('.os-login-mark').append(raccoon.cloneNode(true));
   shell.querySelector('[data-start-menu]').id = 'os-start-menu';
@@ -67,40 +64,27 @@
   const bootFooter = shell.querySelector('[data-boot-footer]');
   const bootSkip = shell.querySelector('[data-boot-skip]');
   const loginSound = shell.querySelector('[data-login-sound]');
-  const soundPrompt = shell.querySelector('[data-startup-sound-prompt]');
   let timer;
   let postActive = false;
   let z = 1;
   let count = 0;
   const storage = { get() { try { return localStorage.getItem('opiekun-desktop-visited'); } catch { return null; } }, set(value) { try { if (value) localStorage.setItem('opiekun-desktop-visited', '1'); else localStorage.removeItem('opiekun-desktop-visited'); } catch {} } };
   let showPost = (() => { try { return localStorage.getItem('opiekun-bios-show-post') === '1'; } catch { return false; } })();
-  function welcomeSeen() { try { return localStorage.getItem('opiekun-startup-welcome-seen') === '1'; } catch { return false; } }
-  function rememberWelcome() { try { localStorage.setItem('opiekun-startup-welcome-seen', '1'); } catch {} }
-  function offerStartupSound() { if (desktop.hidden || welcomeSeen()) return; soundPrompt.hidden = false; soundPrompt.querySelector('[data-startup-sound-play]').focus(); }
   function signalDesktopReady() { desktop.dataset.ready = 'true'; shell.dispatchEvent(new Event('desktop:ready')); }
-  function startupSoundError(error, interactive) {
-    if (error?.name === 'NotAllowedError' && !interactive) offerStartupSound();
-    else if (interactive) soundPrompt.querySelector('[role=status]').textContent = 'Sound could not play. You can continue silently.';
-  }
-  function playStartupSound(interactive = false) {
+  function playStartupSound() {
     try { if (localStorage.getItem('opiekun-startup-sound') === '0') return; } catch {}
     if (!loginSound.canPlayType('audio/wav')) return;
     try {
       loginSound.currentTime = 0;
-      const result = loginSound.play();
-      return result?.then(() => { rememberWelcome(); if (interactive) { soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); } }).catch(error => startupSoundError(error, interactive));
-    } catch (error) {
-      startupSoundError(error, interactive);
-    }
+      Promise.resolve(loginSound.play()).catch(() => {});
+    } catch {}
   }
-  function enterDesktop() { storage.set(shell.querySelector('[data-remember]').checked); showDesktop(); shell.querySelector('[data-open-computer]').focus(); }
-  function showLogin() { clearTimeout(timer); postActive = false; soundPrompt.hidden = true; boot.hidden = true; desktop.hidden = true; login.hidden = false; shell.querySelector('.os-auto-login').textContent = 'Signing in automatically in a moment. Edit a field to pause.'; shell.querySelector('[data-login-enter]').focus(); timer = setTimeout(enterDesktop, 6000); }
-  function showDesktop() { clearTimeout(timer); postActive = false; boot.hidden = true; login.hidden = true; desktop.hidden = false; desktop.dataset.ready = 'false'; Promise.resolve(playStartupSound()).then(() => { if (soundPrompt.hidden) signalDesktopReady(); }); }
-  soundPrompt.querySelector('[data-startup-sound-play]').addEventListener('click', () => playStartupSound(true));
-  soundPrompt.querySelector('[data-startup-sound-skip]').addEventListener('click', () => { rememberWelcome(); soundPrompt.hidden = true; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); });
+  function enterDesktop(withSound = true) { if (login.hidden) return; storage.set(shell.querySelector('[data-remember]').checked); if (withSound) playStartupSound(); showDesktop(); }
+  function showLogin() { clearTimeout(timer); postActive = false; boot.hidden = true; desktop.hidden = true; desktop.dataset.ready = 'false'; login.hidden = false; shell.querySelector('[data-login-enter]').focus(); }
+  function showDesktop() { clearTimeout(timer); postActive = false; boot.hidden = true; login.hidden = true; desktop.hidden = false; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); }
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function startBoot() {
-    clearTimeout(timer); soundPrompt.hidden = true; desktop.hidden = true; login.hidden = true; boot.hidden = false;
+    clearTimeout(timer); desktop.hidden = true; desktop.dataset.ready = 'false'; login.hidden = true; boot.hidden = false;
     postActive = true; setup.hidden = true; screen.hidden = false; brand.hidden = false; bootFooter.hidden = false; bootSkip.hidden = false;
     const postHeader = 'opiekun BIOS v1.00\nCopyright (C) 1995 opiekun\n\nOPIEKUN 95 BIOS Revision 1.00\n\nMain Processor : Virtual Portfolio CPU\nMemory Testing: ';
     const frames = [
@@ -115,14 +99,14 @@
     advance();
   }
   function openSetup() { if (boot.hidden || !setup.hidden || !postActive) return; clearTimeout(timer); setup.hidden = false; screen.hidden = true; brand.hidden = true; bootFooter.hidden = true; bootSkip.hidden = true; progress.hidden = true; setup.querySelector('[data-bios-show-post]').checked = showPost; setup.querySelector('[data-bios-show-post]').focus(); }
-  if (!showPost && (storage.get() || reduced)) showDesktop(); else startBoot();
+  if (!showPost && (storage.get() || reduced)) showLogin(); else startBoot();
   bootSkip.addEventListener('click', showLogin);
   shell.querySelector('[data-boot-setup]').addEventListener('click', openSetup);
   document.addEventListener('keydown', event => { if (event.key === 'Delete' && !boot.hidden && setup.hidden) { event.preventDefault(); openSetup(); } else if (event.key === 'Escape' && !setup.hidden) { event.preventDefault(); startBoot(); } });
   setup.querySelector('[data-bios-save]').addEventListener('click', () => { showPost = setup.querySelector('[data-bios-show-post]').checked; try { localStorage.setItem('opiekun-bios-show-post', showPost ? '1' : '0'); } catch {} startBoot(); });
   setup.querySelector('[data-bios-exit]').addEventListener('click', startBoot);
   shell.querySelector('[data-login-form]').addEventListener('submit', event => { event.preventDefault(); enterDesktop(); });
-  shell.querySelector('[data-login-form]').addEventListener('input', () => { clearTimeout(timer); shell.querySelector('.os-auto-login').textContent = 'Automatic sign-in paused.'; });
+  shell.querySelector('[data-login-silent]').addEventListener('click', () => enterDesktop(false));
   function setMenu(open) { menu.hidden = !open; start.setAttribute('aria-expanded', String(open)); if (!open) menu.querySelectorAll('[data-submenu-trigger]').forEach(button => button.setAttribute('aria-expanded', 'false')); }
   start.addEventListener('click', () => setMenu(menu.hidden));
   start.addEventListener('keydown', event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); setMenu(true); const items = menu.querySelectorAll('.os-start-items > .os-start-group > button, .os-start-items > [data-start-utilities] > button, .os-start-items > button'); items[event.key === 'ArrowDown' ? 0 : items.length - 1]?.focus(); } });
