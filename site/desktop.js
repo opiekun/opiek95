@@ -12,12 +12,11 @@
       <div class="os-bios-brand" data-bios-brand aria-hidden="true">opiekun<span>★</span></div>
       <div class="os-post" data-boot-screen aria-live="polite"></div><div class="os-progress" data-boot-progress hidden role="progressbar" aria-label="Loading desktop"><span></span></div>
       <div class="os-boot-footer" data-boot-footer><button type="button" data-boot-setup>Press <strong>DEL</strong> to enter SETUP</button><span>Virtual hardware · opiekun 95</span></div>
-      <section class="os-bios-setup" data-bios-setup aria-labelledby="os-bios-title" hidden><h2 id="os-bios-title">OPIEKUN BIOS SETUP UTILITY</h2><div class="os-bios-panel"><h3>Standard CMOS Features</h3><p>Processor&nbsp;&nbsp; Virtual Portfolio CPU</p><p>Memory&nbsp;&nbsp;&nbsp;&nbsp; 640K OK</p><p>Primary Master&nbsp; Portfolio Drive</p><label><input type="checkbox" data-bios-show-post> Show POST on return visits</label></div><div class="os-bios-actions"><button type="button" data-bios-save>Save &amp; Exit</button><button type="button" data-bios-exit>Exit Without Saving</button></div><p>Simulation settings only. No computer hardware is changed.</p></section>
+      <section class="os-bios-setup" data-bios-setup aria-labelledby="os-bios-title" hidden><h2 id="os-bios-title">OPIEKUN BIOS SETUP UTILITY</h2><div class="os-bios-panel"><h3>Standard CMOS Features</h3><p>Processor&nbsp;&nbsp; Virtual Portfolio CPU</p><p>Memory&nbsp;&nbsp;&nbsp;&nbsp; 640K OK</p><p>Primary Master&nbsp; Portfolio Drive</p></div><div class="os-bios-actions"><button type="button" data-bios-exit>Exit setup</button></div><p>No computer hardware is changed.</p></section>
       <button type="button" class="os-skip" data-boot-skip>Skip startup</button>
     </section>
     <section class="os-login" data-login hidden aria-labelledby="os-login-title">
       <form class="os-login-card" data-login-form><div class="os-login-mark" aria-hidden="true"></div><div class="os-welcome-copy"><p class="os-kicker">WELCOME TO</p><h1 id="os-login-title">opiekun<span>95</span></h1><p>Make yourself at home.</p><p>Explore my journal, projects, resume, and a few things just for fun.</p>
-      <label class="os-remember"><input type="checkbox" data-remember checked> Skip the boot sequence next time</label>
       <div class="os-welcome-actions"><button type="submit" class="os-button" data-login-enter>Enter desktop</button><button type="button" class="os-button" data-login-silent>Continue silently</button></div></div></form>
     </section>
     <section class="os-desktop" data-desktop hidden aria-label="Desktop">
@@ -68,8 +67,7 @@
   let postActive = false;
   let z = 1;
   let count = 0;
-  const storage = { get() { try { return localStorage.getItem('opiekun-desktop-visited'); } catch { return null; } }, set(value) { try { if (value) localStorage.setItem('opiekun-desktop-visited', '1'); else localStorage.removeItem('opiekun-desktop-visited'); } catch {} } };
-  let showPost = (() => { try { return localStorage.getItem('opiekun-bios-show-post') === '1'; } catch { return false; } })();
+  const bootSeen = (() => { try { return localStorage.getItem('opiekun-boot-seen') === '1'; } catch { return false; } })();
   function signalDesktopReady() { desktop.dataset.ready = 'true'; shell.dispatchEvent(new Event('desktop:ready')); }
   function playStartupSound() {
     try { if (localStorage.getItem('opiekun-startup-sound') === '0') return; } catch {}
@@ -79,10 +77,9 @@
       Promise.resolve(loginSound.play()).catch(() => {});
     } catch {}
   }
-  function enterDesktop(withSound = true) { if (login.hidden) return; storage.set(shell.querySelector('[data-remember]').checked); if (withSound) playStartupSound(); showDesktop(); }
-  function showLogin() { clearTimeout(timer); postActive = false; boot.hidden = true; desktop.hidden = true; desktop.dataset.ready = 'false'; login.hidden = false; shell.querySelector('[data-login-enter]').focus(); }
+  function enterDesktop(withSound = true) { if (login.hidden) return; if (withSound) playStartupSound(); showDesktop(); }
+  function showLogin() { clearTimeout(timer); postActive = false; try { localStorage.setItem('opiekun-boot-seen', '1'); } catch {} boot.hidden = true; desktop.hidden = true; desktop.dataset.ready = 'false'; login.hidden = false; shell.querySelector('[data-login-enter]').focus(); }
   function showDesktop() { clearTimeout(timer); postActive = false; boot.hidden = true; login.hidden = true; desktop.hidden = false; shell.querySelector('[data-open-computer]').focus(); signalDesktopReady(); }
-  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   function startBoot() {
     clearTimeout(timer); desktop.hidden = true; desktop.dataset.ready = 'false'; login.hidden = true; boot.hidden = false;
     postActive = true; setup.hidden = true; screen.hidden = false; brand.hidden = false; bootFooter.hidden = false; bootSkip.hidden = false;
@@ -98,12 +95,11 @@
     const advance = () => { screen.textContent = frames[frame]; postActive = frame < 3; brand.hidden = !postActive; bootFooter.hidden = !postActive; progress.hidden = frame !== frames.length - 1; frame++; timer = setTimeout(frame < frames.length ? advance : showLogin, frame < 3 ? 650 : frame === 3 ? 2200 : 1000); };
     advance();
   }
-  function openSetup() { if (boot.hidden || !setup.hidden || !postActive) return; clearTimeout(timer); setup.hidden = false; screen.hidden = true; brand.hidden = true; bootFooter.hidden = true; bootSkip.hidden = true; progress.hidden = true; setup.querySelector('[data-bios-show-post]').checked = showPost; setup.querySelector('[data-bios-show-post]').focus(); }
-  if (!showPost && (storage.get() || reduced)) showLogin(); else startBoot();
+  function openSetup() { if (boot.hidden || !setup.hidden || !postActive) return; clearTimeout(timer); setup.hidden = false; screen.hidden = true; brand.hidden = true; bootFooter.hidden = true; bootSkip.hidden = true; progress.hidden = true; setup.querySelector('[data-bios-exit]').focus(); }
+  if (bootSeen) showLogin(); else startBoot();
   bootSkip.addEventListener('click', showLogin);
   shell.querySelector('[data-boot-setup]').addEventListener('click', openSetup);
   document.addEventListener('keydown', event => { if (event.key === 'Delete' && !boot.hidden && setup.hidden) { event.preventDefault(); openSetup(); } else if (event.key === 'Escape' && !setup.hidden) { event.preventDefault(); startBoot(); } });
-  setup.querySelector('[data-bios-save]').addEventListener('click', () => { showPost = setup.querySelector('[data-bios-show-post]').checked; try { localStorage.setItem('opiekun-bios-show-post', showPost ? '1' : '0'); } catch {} startBoot(); });
   setup.querySelector('[data-bios-exit]').addEventListener('click', startBoot);
   shell.querySelector('[data-login-form]').addEventListener('submit', event => { event.preventDefault(); enterDesktop(); });
   shell.querySelector('[data-login-silent]').addEventListener('click', () => enterDesktop(false));
