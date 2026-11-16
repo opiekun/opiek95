@@ -13,6 +13,7 @@
   const open = (title, content, icon = 'computer-2') => desktop.windows.open({ title, content, icon });
   const panel = html => { const node = document.createElement('div'); node.className = 'os-utility'; node.innerHTML = html; return node; };
   const launchPortfolio = name => { const target = shell.querySelector(`[data-menu-app="${name}"]`); if (target) target.click(); };
+  shell.dataset.largeLabels = String(get('opiekun-large-labels') === '1');
 
   const wallpapers = { teal: '#087c80', navy: '#173879', plum: '#694358', forest: '#315e50' };
   const images = [
@@ -142,28 +143,81 @@
     content.querySelector('[data-current-time]').textContent = now.toLocaleTimeString();
     open('Date/Time Properties', content);
   }
+  function systemProperties() {
+    const content = document.createElement('div');
+    content.className = 'os-system-properties';
+    content.innerHTML = `<div class="os-system-tabs" role="tablist" aria-label="System Properties">
+      <button type="button" role="tab" data-system-tab="general" aria-selected="true">General</button>
+      <button type="button" role="tab" data-system-tab="devices" aria-selected="false">Device Manager</button>
+      <button type="button" role="tab" data-system-tab="profiles" aria-selected="false">Hardware Profiles</button>
+      <button type="button" role="tab" data-system-tab="performance" aria-selected="false">Performance</button>
+    </div><div class="os-system-sheet">
+      <section data-system-page="general" role="tabpanel"><div class="os-system-summary"><img src="/assets/icons/computer-2.png" alt=""><div><strong>opiekun 95</strong><span>Personal portfolio desktop</span></div></div><fieldset><legend>Registered to:</legend><p>Matheus<br>Software Engineer · Blumenau, Brazil</p></fieldset><p>Explore work through the tabs above or the desktop icons.</p></section>
+      <section data-system-page="devices" role="tabpanel" hidden><p>Installed components:</p><ul class="os-system-tree"><li>▣ Commerce<ul><li>Magento 2 / Adobe Commerce</li><li>PHP</li></ul></li><li>▣ Frontend<ul><li>Angular</li><li>TypeScript</li></ul></li><li>▣ Applications<ul><li>C# / .NET</li><li>AWS</li></ul></li></ul></section>
+      <section data-system-page="profiles" role="tabpanel" hidden><p>Work profile:</p><fieldset><legend>Software Engineering</legend><p>Commerce platforms, financial applications, and software architecture.</p><button type="button" data-system-open="resume">Open Resume</button></fieldset></section>
+      <section data-system-page="performance" role="tabpanel" hidden><p>Portfolio shortcuts:</p><div class="os-system-links"><button type="button" data-system-open="projects">Projects</button><button type="button" data-system-open="journal">Journal</button><button type="button" data-system-open="about">About</button></div><p>Use these to explore the work and notes on this desktop.</p></section>
+    </div><div class="os-system-actions"><button type="button" data-system-close>OK</button></div>`;
+    const app = open('System Properties', content, 'computer-2');
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(410, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(365, area.height || innerHeight - 32)}px`;
+    app.place();
+    content.querySelectorAll('[data-system-tab]').forEach(tab => tab.addEventListener('click', () => {
+      content.querySelectorAll('[data-system-tab]').forEach(button => button.setAttribute('aria-selected', String(button === tab)));
+      content.querySelectorAll('[data-system-page]').forEach(page => { page.hidden = page.dataset.systemPage !== tab.dataset.systemTab; });
+    }));
+    content.querySelectorAll('[data-system-open]').forEach(button => button.addEventListener('click', () => launchPortfolio(button.dataset.systemOpen)));
+    content.querySelector('[data-system-close]').addEventListener('click', () => app.element.querySelector('[data-window-close]').click());
+  }
+  function controlDialog(title, html) {
+    const content = panel(html);
+    content.classList.add('os-control-dialog');
+    const app = open(title, content, 'display_properties-2');
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(390, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(300, area.height || innerHeight - 32)}px`;
+    app.place();
+    content.querySelector('[data-control-dialog-close]').addEventListener('click', () => app.element.querySelector('[data-window-close]').click());
+    return content;
+  }
+  function accessibility() {
+    const content = controlDialog('Accessibility Properties', '<fieldset><legend>Display</legend><label><input type="checkbox" data-large-labels> Use larger desktop and Start menu labels</label></fieldset><p>Label size is saved on this device.</p><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+    const checkbox = content.querySelector('[data-large-labels]');
+    checkbox.checked = shell.dataset.largeLabels === 'true';
+    checkbox.addEventListener('change', () => { shell.dataset.largeLabels = String(checkbox.checked); set('opiekun-large-labels', checkbox.checked ? '1' : '0'); });
+  }
+  function keyboard() {
+    controlDialog('Keyboard Properties', '<fieldset><legend>Desktop shortcuts</legend><dl><dt>Enter</dt><dd>Open a focused shortcut.</dd><dt>Escape</dt><dd>Close the Start menu or a context menu.</dd><dt>Arrow keys</dt><dd>Move or resize a focused window control.</dd></dl></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+  }
+  function mail() {
+    controlDialog('Mail Properties', '<fieldset><legend>Contact</legend><p>Send a message to Matheus:</p><p><a href="mailto:opiekun.matheus@gmail.com">opiekun.matheus@gmail.com</a></p></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+  }
+  function multimedia() {
+    const content = controlDialog('Multimedia Properties', '<fieldset><legend>Audio</legend><p>Listen to Nightwave Plaza from the Music Player.</p><button type="button" data-open-music>Open Music Player</button></fieldset><div class="os-control-dialog-actions"><button type="button" data-control-dialog-close>OK</button></div>');
+    content.querySelector('[data-open-music]').addEventListener('click', () => launchPortfolio('music'));
+  }
   function controlPanel() {
     const content = document.createElement('div'); content.className = 'os-control-panel';
     content.innerHTML = '<div class="os-control-menubar" data-control-menubar><details><summary>File</summary><div><button type="button" data-control-close>Close</button></div></details><details><summary>View</summary><div><button type="button" data-control-view="icons">Large Icons</button><button type="button" data-control-view="list">List</button></div></details><details><summary>Help</summary><div><button type="button" data-control-help>About Control Panel</button></div></details></div><div class="os-control-grid" data-control-grid></div><div class="os-control-status" data-control-status role="status">Select an icon to view its description.</div>';
     const items = [
-      ['Accessibility Options', 'accessibility', 'accessibility', 'Accessibility options are unavailable in this simulation.'],
+      ['Accessibility Options', 'accessibility', 'accessibility', 'Changes desktop label size.'],
       ['Add New Hardware', 'hardware', 'hardware', 'Hardware settings are unavailable in this simulation.'],
       ['Add/Remove Programs', 'programs', 'programs', 'Program installation is unavailable in this simulation.'],
       ['Date/Time', 'date', 'date-time', 'Displays the date and time from your device.'],
       ['Display', 'display', 'display', 'Changes your desktop background and window appearance.'],
       ['Fonts', 'fonts', 'fonts', 'Font management is unavailable in this simulation.'],
-      ['Internet', 'internet', 'internet', 'Internet settings are unavailable in this simulation.'],
-      ['Keyboard', 'keyboard', 'keyboard', 'Keyboard settings are unavailable in this simulation.'],
-      ['Mail', 'mail', 'mail', 'Mail settings are unavailable in this simulation.'],
+      ['Internet', 'internet', 'internet', 'Opens the journal in Internet Explorer.'],
+      ['Keyboard', 'keyboard', 'keyboard', 'Shows desktop keyboard shortcuts.'],
+      ['Mail', 'mail', 'mail', 'Opens contact information.'],
       ['Mouse', 'mouse', 'mouse', 'Mouse settings are unavailable in this simulation.'],
-      ['Multimedia', 'multimedia', 'multimedia', 'Multimedia settings are unavailable in this simulation.'],
+      ['Multimedia', 'multimedia', 'multimedia', 'Opens the Music Player.'],
       ['Network', 'network', 'network', 'Network settings are unavailable in this simulation.'],
       ['Passwords', 'passwords', null, 'Password settings are unavailable in this simulation.'],
       ['Power', 'power', 'power', 'Power settings are unavailable in this simulation.'],
       ['Printers', 'printers', 'printers', 'Printer settings are unavailable in this simulation.'],
       ['Regional Settings', 'regional', 'regional', 'Regional settings are unavailable in this simulation.'],
       ['Sounds', 'sounds', 'sounds', 'Changes the startup sound preference.'],
-      ['System', 'system', null, 'System hardware details are unavailable in this simulation.']
+      ['System', 'system', null, 'View portfolio system properties.']
     ];
     const grid = content.querySelector('[data-control-grid]');
     items.forEach(([label, action, image, description]) => {
@@ -171,7 +225,7 @@
       const icon = document.createElement('img'); icon.alt = ''; icon.src = image ? `/assets/icons/control-panel/${image}.png` : `/assets/icons/${action === 'system' ? 'computer-2' : 'users-0'}.png`;
       const caption = document.createElement('span'); caption.textContent = label; button.append(icon, caption); grid.append(button);
     });
-    const controls = { display: settings, sounds, date: dateTime };
+    const controls = { accessibility, display: settings, internet: () => launchPortfolio('internet'), keyboard, mail, multimedia, sounds, date: dateTime, system: systemProperties };
     const status = content.querySelector('[data-control-status]');
     content.addEventListener('focusin', event => { const button = event.target.closest('[data-control]'); if (button) status.textContent = button.dataset.description; });
     content.addEventListener('click', event => { const button = event.target.closest('[data-control]'); if (!button) return; if (controls[button.dataset.control]) controls[button.dataset.control](); else status.textContent = button.dataset.description; });
@@ -186,11 +240,101 @@
     content.querySelector('[data-control-help]').addEventListener('click', () => { status.textContent = 'Control Panel contains simulated settings for this desktop.'; });
   }
   function notepad() {
-    const content = panel('<div class="os-utility-toolbar"><button type="button" data-note-save>Save</button><button type="button" data-note-clear>Clear</button><span role="status" aria-live="polite"></span></div><label class="os-note-label">Notepad<textarea data-notepad aria-label="Notepad text"></textarea></label>');
-    const text = content.querySelector('textarea'); text.value = get('opiekun-notepad') || '';
-    content.querySelector('[data-note-save]').addEventListener('click', () => { content.querySelector('[role=status]').textContent = set('opiekun-notepad', text.value) ? 'Saved on this device.' : 'Unable to save on this device.'; });
-    content.querySelector('[data-note-clear]').addEventListener('click', () => { text.value = ''; text.focus(); });
-    open('Notepad', content, 'notepad-1'); text.focus();
+    const content = document.createElement('div');
+    content.className = 'os-notepad';
+    content.innerHTML = `<div class="os-notepad-menubar">
+      <details><summary>File</summary><div><button type="button" data-note-new>New</button><button type="button" data-note-open>Open...</button><button type="button" data-note-save>Save</button><button type="button" data-note-save-as>Save As...</button><hr><button type="button" data-note-exit>Exit</button></div></details>
+      <details><summary>Edit</summary><div><button type="button" data-note-undo disabled>Undo <span>Ctrl+Z</span></button><hr><button type="button" data-note-cut>Cut <span>Ctrl+X</span></button><button type="button" data-note-copy>Copy <span>Ctrl+C</span></button><button type="button" data-note-paste>Paste <span>Ctrl+V</span></button><button type="button" data-note-delete>Delete <span>Del</span></button><hr><button type="button" data-note-select-all>Select All</button><button type="button" data-note-time-date>Time/Date <span>F5</span></button><hr><button type="button" data-note-word-wrap role="menuitemcheckbox" aria-checked="false">Word Wrap</button></div></details>
+      <details><summary>Search</summary><div><button type="button" data-note-find>Find...</button><button type="button" data-note-find-again>Find Next <span>F3</span></button></div></details>
+      <details><summary>Help</summary><div><button type="button" data-note-about>About Notepad</button></div></details>
+    </div><textarea data-notepad aria-label="Notepad text" wrap="off" spellcheck="false"></textarea><input type="file" data-note-file accept=".txt,text/plain" hidden><span class="os-note-status" role="status" aria-live="polite"></span>`;
+    const text = content.querySelector('[data-notepad]');
+    text.value = get('opiekun-notepad') || '';
+    const app = open('Untitled - Notepad', content, 'notepad-1');
+    const status = content.querySelector('[role=status]');
+    const history = [];
+    let previous = text.value;
+    let filename = 'Untitled';
+    let clipboard = '';
+    let lastQuery = '';
+    const button = name => content.querySelector(`[data-note-${name}]`);
+    const selection = () => text.value.slice(text.selectionStart, text.selectionEnd);
+    function updateEdit() {
+      const hasSelection = text.selectionStart !== text.selectionEnd;
+      for (const name of ['cut', 'copy', 'delete']) button(name).disabled = !hasSelection;
+      button('undo').disabled = !history.length;
+      button('paste').disabled = !clipboard;
+    }
+    function change(value, start = text.selectionStart, end = text.selectionEnd) {
+      const before = text.value;
+      text.setRangeText(value, start, end, 'end');
+      if (text.value !== before) { history.push(before); previous = text.value; }
+      text.focus(); updateEdit();
+    }
+    function findNext() {
+      if (!lastQuery) return;
+      const source = text.value.toLowerCase(), query = lastQuery.toLowerCase();
+      let index = source.indexOf(query, text.selectionEnd);
+      if (index < 0) index = source.indexOf(query);
+      if (index < 0) { status.textContent = `Cannot find ${lastQuery}.`; return; }
+      text.focus(); text.setSelectionRange(index, index + lastQuery.length); updateEdit();
+    }
+    function find() {
+      const dialog = document.createElement('div');
+      dialog.className = 'os-note-find-dialog';
+      dialog.innerHTML = '<label>Find what: <input data-note-find-query></label><button type="button" data-note-find-next>Find Next</button><button type="button" data-note-find-close>Cancel</button>';
+      const search = dialog.querySelector('[data-note-find-query]');
+      search.value = lastQuery;
+      const popup = open('Find', dialog, 'notepad-1');
+      popup.element.style.width = '330px'; popup.element.style.height = '130px'; popup.place();
+      const submit = () => { lastQuery = search.value; findNext(); };
+      dialog.querySelector('[data-note-find-next]').addEventListener('click', submit);
+      search.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); submit(); } });
+      dialog.querySelector('[data-note-find-close]').addEventListener('click', () => popup.element.querySelector('[data-window-close]').click());
+      search.focus();
+    }
+    function bind(name, action) {
+      button(name).addEventListener('click', () => {
+        action();
+        content.querySelectorAll('.os-notepad-menubar details').forEach(menu => { menu.open = false; });
+      });
+    }
+    text.addEventListener('input', () => { if (text.value !== previous) { history.push(previous); previous = text.value; } updateEdit(); });
+    for (const type of ['select', 'click', 'keyup']) text.addEventListener(type, updateEdit);
+    text.addEventListener('keydown', event => {
+      const command = event.key === 'F5' ? 'time-date' : event.key === 'F3' ? 'find-again' : event.ctrlKey && !event.altKey ? ({ n: 'new', o: 'open', s: 'save', f: 'find', z: 'undo' })[event.key.toLowerCase()] : null;
+      if (command) { event.preventDefault(); button(command).click(); }
+    });
+    bind('new', () => { text.value = ''; previous = ''; history.length = 0; filename = 'Untitled'; app.setTitle('Untitled - Notepad'); status.textContent = ''; text.focus(); updateEdit(); });
+    bind('open', () => button('file').click());
+    button('file').addEventListener('change', async event => {
+      const file = event.target.files?.[0]; if (!file) return;
+      try {
+        text.value = await file.text(); previous = text.value; history.length = 0;
+        filename = file.name; app.setTitle(`${filename} - Notepad`); status.textContent = `Opened ${filename}.`; text.focus(); updateEdit();
+      } catch { status.textContent = 'Could not open this file.'; }
+    });
+    bind('save', () => { status.textContent = set('opiekun-notepad', text.value) ? 'Saved in this browser.' : 'Unable to save in this browser.'; });
+    bind('save-as', () => {
+      const name = filename === 'Untitled' ? 'Note.txt' : filename;
+      const url = URL.createObjectURL(new Blob([text.value], { type: 'text/plain;charset=utf-8' }));
+      const link = document.createElement('a'); link.href = url; link.download = name; link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      filename = name; app.setTitle(`${filename} - Notepad`); status.textContent = `Downloaded ${filename}.`;
+    });
+    bind('exit', () => app.element.querySelector('[data-window-close]').click());
+    bind('undo', () => { if (!history.length) return; text.value = history.pop(); previous = text.value; text.focus(); updateEdit(); });
+    bind('copy', () => { clipboard = selection(); if (clipboard) navigator.clipboard?.writeText(clipboard).catch(() => {}); text.focus(); updateEdit(); });
+    bind('cut', () => { clipboard = selection(); if (clipboard) { navigator.clipboard?.writeText(clipboard).catch(() => {}); change(''); } });
+    bind('paste', async () => { let value = clipboard; try { value = await navigator.clipboard?.readText() || value; } catch {} if (value) change(value); });
+    bind('delete', () => change(''));
+    bind('select-all', () => { text.select(); updateEdit(); });
+    bind('time-date', () => change(`${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}`));
+    bind('word-wrap', () => { const wraps = text.getAttribute('wrap') !== 'off'; text.setAttribute('wrap', wraps ? 'off' : 'soft'); button('word-wrap').setAttribute('aria-checked', String(!wraps)); text.focus(); });
+    bind('find', find);
+    bind('find-again', findNext);
+    bind('about', () => open('About Notepad', panel('<h2>Notepad</h2><p>Write plain text. Save keeps it in this browser; Save As downloads a text file.</p>'), 'notepad-1'));
+    updateEdit(); text.focus();
   }
   function about() { open('About opiekun 95', panel('<h2>opiekun 95</h2><p>Explore the journal, projects, Resume and Music Player from the desktop or Start menu.</p>')); }
   function help() { open('Help', panel('<h2>Desktop Help</h2><p>Double-click a desktop shortcut, or focus it and press Enter. On touch screens, tap once. Drag shortcuts to move them; positions are saved on this device.</p><p>Use the title bar to move a window, the corner to resize it, and the taskbar to restore a minimized window. Arrow keys also move or resize focused controls.</p><p>Right-click the desktop to arrange icons or open Display Properties. Right-click a shortcut to open it or move it to the Recycle Bin. Run accepts notepad, control, explorer, help and about.</p>')); }
@@ -281,7 +425,7 @@
   const iconItems = [...icons.children];
   iconItems.forEach(item => { item.draggable = false; item.querySelectorAll('img').forEach(image => { image.draggable = false; }); });
   icons.addEventListener('dragstart', event => event.preventDefault());
-  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'recycle-bin'];
+  const iconKeys = ['computer', 'journal', 'projects', 'about', 'resume', 'music', 'doom', 'internet', 'recycle-bin'];
   let positions;
   try { positions = JSON.parse(get('opiekun-icon-positions') || '{}'); if (!positions || typeof positions !== 'object' || Array.isArray(positions)) positions = {}; } catch { positions = {}; }
   let autoArrange = get('opiekun-icon-auto-arrange') === '1';
@@ -387,7 +531,7 @@
   arrangeMenu.addEventListener('keydown', event => { if (event.key === 'ArrowLeft') { event.preventDefault(); arrangeMenu.classList.remove('is-open'); arrangeButton.focus(); } });
   context.querySelector('[data-context-delete]').addEventListener('click', () => { const index = shortcuts.indexOf(selected); if (index >= 0 && !recycled.includes(index)) recycled.push(index); syncBin(); context.hidden = true; bin.focus(); });
   context.querySelector('[data-context-properties]').addEventListener('click', () => { context.hidden = true; settings(); });
-  context.querySelector('[data-context-icon-properties]').addEventListener('click', () => { if (!selected) return; context.hidden = true; const content = panel('<h2 data-shortcut-name></h2><p>Type: Desktop shortcut</p><p data-shortcut-target></p>'); const name = selected.textContent.trim(); content.querySelector('[data-shortcut-name]').textContent = name; content.querySelector('[data-shortcut-target]').textContent = selected.getAttribute('href') ? `Target: ${selected.getAttribute('href')}` : `Target: ${name}`; open(`${name} Properties`, content); });
+  context.querySelector('[data-context-icon-properties]').addEventListener('click', () => { if (!selected) return; context.hidden = true; if (selected.matches('[data-open-computer]')) { systemProperties(); return; } const content = panel('<h2 data-shortcut-name></h2><p>Type: Desktop shortcut</p><p data-shortcut-target></p>'); const name = selected.textContent.trim(); content.querySelector('[data-shortcut-name]').textContent = name; content.querySelector('[data-shortcut-target]').textContent = selected.getAttribute('href') ? `Target: ${selected.getAttribute('href')}` : `Target: ${name}`; open(`${name} Properties`, content); });
   context.querySelectorAll('[data-context-arrange]').forEach(button => button.addEventListener('click', () => { const sorted = [...iconItems].sort((a, b) => button.dataset.contextArrange === 'name' ? a.textContent.localeCompare(b.textContent) : (a.tagName === 'BUTTON') - (b.tagName === 'BUTTON') || a.textContent.localeCompare(b.textContent)); arrangeIcons(sorted); context.hidden = true; }));
   context.querySelector('[data-context-lineup]').addEventListener('click', () => { lineUpIcons(); context.hidden = true; });
   context.querySelector('[data-context-refresh]').addEventListener('click', () => { applyWallpaper(workspace.dataset.wallpaper); context.hidden = true; });
@@ -399,11 +543,12 @@
   power.querySelector('[data-power-restart]').addEventListener('click', () => { power.hidden = true; shell.querySelector('[data-restart]').click(); });
   function shutdown() { closeMenu(); context.hidden = true; shell.querySelectorAll('[data-window-close]').forEach(button => button.click()); workspace.hidden = true; power.hidden = false; power.querySelector('button').focus(); }
   const actions = { settings, sounds, dateTime, controlPanel, find, help, documents, run, notepad, dosPrompt, about, shutdown };
-  const labels = { notepad: ['Notepad', 'notepad-1'], dosPrompt: ['MS-DOS Prompt', 'executable-0'], documents: ['Documents folder', 'directory_closed-0'], settings: ['Display', 'display_properties-2'], sounds: ['Sounds', 'media_player-0'], dateTime: ['Date/Time', 'display_properties-2'], controlPanel: ['Control Panel', 'display_properties-2'], find: ['Find', 'search_directory-2'], help: ['Help', 'help_book_computer-0'], run: ['Run…', 'executable-0'], about: ['About opiekun 95', 'users-0'], shutdown: ['Shut Down', 'shut_down_normal-0'] };
-  const programs = shell.querySelector('.os-start-group [data-start-submenu]');
+  const labels = { notepad: ['Notepad', 'notepad-1'], dosPrompt: ['MS-DOS Prompt', 'executable-0'], documents: ['Documents folder', 'directory_closed-0'], settings: ['Display', 'control-panel/display'], sounds: ['Sounds', 'control-panel/sounds'], dateTime: ['Date/Time', 'control-panel/date-time'], controlPanel: ['Control Panel', 'directory_control_panel-2'], find: ['Find', 'search_directory-2'], help: ['Help', 'help_book_computer-0'], run: ['Run…', 'executable-0'], about: ['About opiekun 95', 'users-0'], shutdown: ['Shut Down', 'shut_down_normal-0'] };
+  const accessories = shell.querySelector('[data-programs-accessories] [data-start-submenu]');
+  const documentsMenu = shell.querySelector('[data-documents-group] [data-start-submenu]');
   const settingsMenu = shell.querySelector('[data-settings-group] [data-start-submenu]');
   const bottom = shell.querySelector('[data-start-utilities]');
-  const destinations = { notepad: programs, dosPrompt: programs, documents: programs, settings: settingsMenu, sounds: settingsMenu, dateTime: settingsMenu, controlPanel: settingsMenu, find: bottom, help: bottom, run: bottom, about: bottom, shutdown: bottom };
+  const destinations = { notepad: accessories, dosPrompt: accessories, documents: documentsMenu, settings: settingsMenu, sounds: settingsMenu, dateTime: settingsMenu, controlPanel: settingsMenu, find: bottom, help: bottom, run: bottom, about: bottom, shutdown: bottom };
   Object.entries(labels).forEach(([name, [label, icon]]) => { const button = document.createElement('button'); button.type = 'button'; button.dataset.utilityMenu = name; const image = document.createElement('img'); image.src = `/assets/icons/${icon}.png`; image.alt = ''; button.append(image, document.createTextNode(label)); button.addEventListener('click', () => { closeMenu(); actions[name](); }); destinations[name].append(button); });
   const taskbar = shell.querySelector('[data-taskbar]');
   const clock = shell.querySelector('[data-clock]');

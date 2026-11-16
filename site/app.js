@@ -72,6 +72,7 @@
         document.getElementById(post.content).content.cloneNode(true)
       );
       panel.append(layout);
+      panel.append(document.querySelector('#journal .geo-journal-ads').cloneNode(true));
     }
     document.querySelector('.empty-journal').hidden = posts.length > 0;
   }
@@ -93,6 +94,9 @@
   }
   mountPosts();
   mountArticlePreview();
+  document.querySelectorAll('.geo-journal-ads [data-app="music"]').forEach(button => button.addEventListener('click', () => {
+    document.getElementById('music-player').scrollIntoView({ block: 'end' });
+  }));
 
   const navigation = Array.from(document.querySelectorAll('[data-view]'));
   const panels = Array.from(views.keys(), name => document.getElementById(name));

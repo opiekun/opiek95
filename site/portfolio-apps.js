@@ -5,6 +5,7 @@
   if (!desktop || !shell) return;
   let serial = 0;
   let musicWindow = null;
+  let doomWindow = null;
 
   // Clone only inert content. Never copy executable elements, event handlers or unsafe URLs.
   function copyPanel(source) {
@@ -36,8 +37,31 @@
   function openPanel(name) {
     const content = document.createElement('div');
     content.className = 'os-app-content';
-    const title = { journal: 'Journal', projects: 'Projects', about: 'About' }[name];
-    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : 'notepad-1', content, initialPosition: name === 'about' ? 'top-right' : undefined, onClose: name === 'about' ? () => { try { localStorage.setItem('opiekun-about-dismissed', '1'); } catch {} } : undefined });
+    const frame = document.createElement('div');
+    frame.className = 'os-portfolio-frame';
+    if (name === 'projects') {
+      frame.dataset.projectsView = 'icons';
+      frame.innerHTML = '<div class="os-projects-toolbar" data-projects-toolbar role="group" aria-label="Project view"><span>Projects folder</span><button type="button" data-project-view="icons" aria-checked="true">Icons</button><button type="button" data-project-view="details" aria-checked="false">Details</button></div>';
+      frame.querySelectorAll('[data-project-view]').forEach(button => button.addEventListener('click', () => {
+        frame.dataset.projectsView = button.dataset.projectView;
+        frame.querySelectorAll('[data-project-view]').forEach(item => item.setAttribute('aria-checked', String(item === button)));
+      }));
+    }
+    if (name === 'internet') {
+      frame.innerHTML = '<div class="os-internet-toolbar"><button type="button" data-internet-home>Home</button><button type="button" data-internet-refresh>Refresh</button><label>Address: <input data-internet-address readonly aria-label="Address"></label></div>';
+    }
+    frame.append(content);
+    const title = { journal: 'Journal', projects: 'Projects', about: 'About', internet: 'Internet Explorer' }[name];
+    const app = desktop.windows.open({ title, icon: name === 'projects' ? 'directory_closed-0' : name === 'internet' ? 'control-panel/internet' : 'notepad-1', content: frame, initialPosition: name === 'about' ? 'top-right' : name === 'internet' ? 'journal-desktop' : undefined, onClose: ['about', 'internet'].includes(name) ? () => { try { localStorage.setItem(name === 'about' ? 'opiekun-about-dismissed' : 'opiekun-internet-dismissed', '1'); } catch {} } : undefined });
+    if (name === 'projects') app.element.classList.add('os-projects-window');
+    if (name === 'internet') {
+      app.element.classList.add('os-internet-window');
+      const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+      const width = area.width || innerWidth, height = area.height || innerHeight - 32;
+      app.element.style.width = `${Math.max(0, Math.min(1060, Math.max(560, width * .44), width - 24))}px`;
+      app.element.style.height = `${Math.max(0, Math.min(910, height * .77, height - 24))}px`;
+      app.place();
+    }
     if (name === 'about') {
       app.element.classList.add('os-about-window');
       const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
@@ -49,6 +73,10 @@
     }
     function show(panel, focus = false) {
       content.replaceChildren(copyPanel(document.getElementById(panel)));
+      if (name === 'internet') {
+        const address = 'http://www.geocities.com/SiliconValley/opiekun/';
+        frame.querySelector('[data-internet-address]').value = panel === 'journal' ? address : panel === 'article-preview' ? `${address}preview.html` : `${address}${panel.slice(8)}.html`;
+      }
       if (focus) {
         const heading = content.querySelector('h1, h2');
         if (heading) { heading.tabIndex = -1; heading.focus(); }
@@ -81,6 +109,13 @@
         content.append(permalink);
       }
     }
+    if (name === 'internet') {
+      frame.querySelector('[data-internet-home]').addEventListener('click', () => show('journal'));
+      frame.querySelector('[data-internet-refresh]').addEventListener('click', () => {
+        const panel = content.firstElementChild?.id.replace(/^os-copy-\d+-/, '') || 'journal';
+        show(panel);
+      });
+    }
     content.addEventListener('click', event => {
       const link = event.target.closest('a');
       if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || (link.target && link.target !== '_self')) return;
@@ -94,7 +129,7 @@
         event.preventDefault(); event.stopPropagation(); show(view, true);
       }
     });
-    show(name);
+    show(name === 'internet' ? 'journal' : name);
     return app;
   }
 
@@ -106,6 +141,26 @@
     toolbar.append(download, external);
     content.append(toolbar, copyPanel(document.getElementById('resume-document')));
     desktop.windows.open({ title: 'Resume', icon: 'notepad-1', content });
+  }
+
+  function openDoom() {
+    if (doomWindow?.element.isConnected) { doomWindow.element.hidden = false; doomWindow.focus(); return; }
+    const content = document.createElement('div');
+    content.className = 'os-doom';
+    content.innerHTML = '<div class="os-doom-toolbar"><span data-doom-title>Doom shareware: Episode 1</span><button type="button" data-doom-fullscreen>Full screen</button></div><iframe data-doom-frame title="Doom game" src="/assets/doom/index.html" allow="fullscreen" allowfullscreen></iframe>';
+    const frame = content.querySelector('[data-doom-frame]');
+    const updateTitle = event => {
+      if (event.source !== frame.contentWindow || event.origin !== location.origin || event.data?.type !== 'opiek95-doom-selection') return;
+      content.querySelector('[data-doom-title]').textContent = event.data.title;
+    };
+    window.addEventListener('message', updateTitle);
+    content.querySelector('[data-doom-fullscreen]').addEventListener('click', () => frame.requestFullscreen?.());
+    const app = desktop.windows.open({ title: 'Doom', icon: 'executable-0', content, onClose: () => { window.removeEventListener('message', updateTitle); doomWindow = null; } });
+    doomWindow = app;
+    const area = shell.querySelector('[data-window-layer]').getBoundingClientRect();
+    app.element.style.width = `${Math.min(760, area.width || innerWidth)}px`;
+    app.element.style.height = `${Math.min(550, area.height || innerHeight - 32)}px`;
+    app.place();
   }
 
   function openMusic() {
@@ -174,7 +229,8 @@
     shell.querySelector('[data-start]').setAttribute('aria-expanded', 'false');
     if (name === 'resume') openResume();
     else if (name === 'music') openMusic();
-    else if (['journal', 'projects', 'about'].includes(name)) openPanel(name);
+    else if (name === 'doom') openDoom();
+    else if (['journal', 'projects', 'about', 'internet'].includes(name)) openPanel(name);
   }
   function targetApp(target) {
     const item = target.closest('[data-menu-app], [data-app], .os-icons a[href^="/#"]');
@@ -195,12 +251,14 @@
     if (!target || !target.item.closest('.os-icons') || lastPointer === 'touch') return;
     event.preventDefault(); event.stopImmediatePropagation(); launch(target.name);
   }, true);
-  function openWelcomeAbout() {
+  function openWelcomeDesktop() {
     if (shell.hidden || shell.querySelector('[data-desktop]').hidden || shell.querySelector('[data-desktop]').dataset.ready !== 'true') return;
-    try { if (localStorage.getItem('opiekun-about-dismissed') === '1') return; } catch {}
-    if (shell.querySelector('[data-window][aria-label="About"]')) return;
-    openPanel('about');
+    for (const [name, title, key] of [['about', 'About', 'opiekun-about-dismissed'], ['internet', 'Internet Explorer', 'opiekun-internet-dismissed']]) {
+      let dismissed = false;
+      try { dismissed = localStorage.getItem(key) === '1'; } catch {}
+      if (!dismissed && !shell.querySelector(`[data-window][aria-label="${title}"]`)) openPanel(name);
+    }
   }
-  shell.addEventListener('desktop:ready', openWelcomeAbout);
-  openWelcomeAbout();
+  shell.addEventListener('desktop:ready', openWelcomeDesktop);
+  openWelcomeDesktop();
 })();

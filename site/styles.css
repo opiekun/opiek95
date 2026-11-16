@@ -71,11 +71,13 @@ h2, h3 { font-family: var(--font-body); font-weight: 700; line-height: 1.4; }
 .title-bar::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0px, transparent 2px, rgb(127 188 195 / 4%) 2px, rgb(127 188 195 / 4%) 4px); pointer-events: none; }
 .title-bar > span:first-child { min-width: 0; display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
 .title-bar .icon { width: 15px; height: 15px; flex-basis: 15px; }
-.window-controls { display: flex; gap: 4px; flex-shrink: 0; }
-.window-controls > span { display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); width: 13px; height: 13px; color: var(--button-text); font: 700 12px/1 var(--font-body); }
-.control-min { background: var(--control-min); }
-.control-max { background: var(--control-max); }
-.control-close { background: var(--btn-danger); }
+.window-controls { display: flex; gap: 2px; flex-shrink: 0; }
+.window-controls > span { position: relative; display: block; width: 16px; height: 16px; background: #c0c0c0; box-shadow: inset -1px -1px #000, inset 1px 1px #fff, inset -2px -2px #7f7f7f, inset 2px 2px #dfdfdf; font-size: 0; }
+.window-controls .control-close { margin-left: 1px; }
+.window-controls > span::before { content: ""; position: absolute; display: block; width: 10px; height: 10px; top: 3px; left: 3px; background-position: center; background-repeat: no-repeat; image-rendering: pixelated; }
+.window-controls .control-min::before { top: 10px; left: 4px; width: 6px; height: 2px; background: #000; }
+.window-controls .control-max::before { background-image: url("/assets/icons/title-maximize.svg"); }
+.window-controls .control-close::before { content: "×"; width: 12px; height: 13px; top: 1px; left: 2px; font: bold 13px/13px Arial, sans-serif; text-align: center; }
 .eyebrow { font: 600 11px/1.6 var(--font-body); letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
 h1 { font-size: clamp(32px, 3vw, 40px); margin-top: 8px; letter-spacing: -0.8px; overflow-wrap: anywhere; text-wrap: balance; }
 .pink-period { color: var(--sparkle); }
